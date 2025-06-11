@@ -1,8 +1,11 @@
 # trabalho-integrador
 
-Sobre o projeto: A ideia central do projeto é fazer um sistema de controle de contas para o transporte rodoviário, onde seja possivel fazer o cadastro de veiculos e de entradas/saídas e gerar relatórios referenciandos os dados cadastrados.
+## Sobre o projeto
 
-Referente as pastas Banco de Dados I, Engenharia de Software I e Programação II:
-Banco de Dados I: Reservada a entrega de atividades pedidas pelo professor do componente curricular.
-Engenharia de Software I: Reservada a entrega de atividades pedidas pelo professor do componente curricular.
-Programação II: Reservada a entrega de atividades pedidas pelo professor do componente curricular.
+A ideia central do projeto é fazer um sistema de controle de contas para o transporte rodoviário, onde seja possível fazer o cadastro de veículos e de entradas/saídas, além de gerar relatórios referenciando os dados cadastrados.
+
+## Estrutura de Pastas
+
+- **Banco de Dados I:** Reservada à entrega de atividades pedidas pelo professor do componente curricular.
+- **Engenharia de Software I:** Reservada à entrega de atividades pedidas pelo professor do componente curricular.
+- **Programação II:** Reservada à entrega de atividades pedidas pelo professor do componente curricular.
