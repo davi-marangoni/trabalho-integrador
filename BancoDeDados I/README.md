@@ -2,6 +2,11 @@
 
 Este repositório contém os arquivos relacionados à parte de Banco de Dados do Trabalho Integrador.
 
+## Estudantes
+
+- Arthur Antonio Bertoglio     | Matricula 20230004213 
+- Davi Augusto Marangoni Mocva | Matricula 20230003806  
+
 ## Estrutura de Pastas
 
 - **Raiz da pasta `BancoDeDados I`**  
