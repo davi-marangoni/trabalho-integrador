@@ -1,5 +1,3 @@
-# EditorConfig para projeto Node.js com TypeScript, Express e pg-promise
-
 root = true
 
 [*]
