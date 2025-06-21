@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import usuarioRouter from './routes/usuario.router';
+import veiculoRouter from './routes/veiculo.router';
 import { UsuarioService } from './service/usuario.service';
 
 // Carrega as variáveis de ambiente
@@ -15,7 +16,7 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    
+
     if (req.method === 'OPTIONS') {
         res.sendStatus(200);
     } else {
@@ -34,6 +35,7 @@ app.use((req, res, next) => {
 
 // Rotas da API
 app.use('/api/usuarios', usuarioRouter);
+app.use('/api/veiculos', veiculoRouter);
 
 // Rota de health check
 app.get('/health', (req, res) => {
@@ -74,6 +76,7 @@ app.listen(PORT, () => {
     console.log(`📋 API disponível em http://localhost:${PORT}`);
     console.log(`🏥 Health check em http://localhost:${PORT}/health`);
     console.log(`👤 Rotas de usuário em http://localhost:${PORT}/api/usuarios`);
+    console.log(`🚛 Rotas de veículo em http://localhost:${PORT}/api/veiculos`);
 });
 
 export default app;

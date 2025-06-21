@@ -1,10 +1,11 @@
 
 export interface Veiculo {
     placa: string;
-    modelo: string;
-    renavam: string;
+    modelo?: string;
+    renavam?: string;
     situacao: string; // A - Ativo, I - Inativo
-    ano: number;
+    tipo: number; // Tipo do veículo
+    ano?: number;
     emailUsuarioAdicionou: string;
 }
 
