@@ -1,0 +1,21 @@
+meta {
+  name: atualizarSenhaUsuario
+  type: http
+  seq: 6
+}
+
+put {
+  url: http://localhost:3000/api/usuarios/usuarioteste@integrador.com/senha
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: 6bc87e7c3759d5b3ab9a0262840f9848e1a38266ba5e3ead22e06670863253d4
+}
+
+body:json {
+  {
+    "novaSenha": "novaSenha123"
+  }
+}

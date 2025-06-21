@@ -1,0 +1,21 @@
+meta {
+  name: editarVeiculo
+  type: http
+  seq: 5
+}
+
+put {
+  url: http://localhost:3000/api/veiculos/MVD8927
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: cabf87fa43a649eacb09647110f9672719eebf3aa0b4efdac52f563e7b9c1cc7
+}
+
+body:json {
+  {
+    "situacao": "I"
+  }
+}
