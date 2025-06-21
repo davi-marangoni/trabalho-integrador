@@ -325,12 +325,14 @@ export class UsuarioController {
      */
     public async logout(req: Request, res: Response): Promise<void> {
         try {
-            const { token } = req.body;
+            // Extrai o token do header Authorization
+            const authHeader = req.headers.authorization;
+            const token = authHeader?.replace('Bearer ', '');
 
             if (!token) {
                 res.status(400).json({
                     success: false,
-                    message: 'Token é obrigatório'
+                    message: 'Token não encontrado no header de autorização'
                 });
                 return;
             }
