@@ -221,30 +221,5 @@ export class UsuarioService {
             }
         }
     }
-
-    /**
-     * Busca usuários baseado no tipo do usuário logado
-     * - Tipo 1 (admin): retorna todos os usuários
-     * - Tipo 2 (comum): retorna apenas o próprio usuário
-     */
-    public async getUsuariosFiltrados(emailUsuarioLogado: string, tipoUsuarioLogado: number): Promise<Usuario[]> {
-        try {
-            if (tipoUsuarioLogado === 1) {
-                // Administrador pode ver todos os usuários
-                return await this.getUsuarios();
-            } else {
-                // Usuário comum só pode ver a si mesmo
-                const usuario = await this.getUsuarioByEmail(emailUsuarioLogado);
-                if (usuario) {
-                    // Remove a senha por segurança
-                    const { senha: _, ...usuarioSemSenha } = usuario;
-                    return [usuarioSemSenha as Usuario];
-                }
-                return [];
-            }
-        } catch (error) {
-            throw new Error(`Erro ao buscar usuários filtrados: ${error}`);
-        }
-    }
 }
 

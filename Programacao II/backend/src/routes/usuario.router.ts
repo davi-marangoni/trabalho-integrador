@@ -11,14 +11,10 @@ router.post('/login', async (req: Request, res: Response) => {
     await usuarioController.login(req, res);
 });
 
-router.post('/validate-token', async (req: Request, res: Response) => {
-    await usuarioController.validateToken(req, res);
-});
-
-// Rotas protegidas (precisam de autenticação)
+// Rotas protegidas para administradores (tipo 1)
 router.get('/',
     authMiddleware.authenticate,
-    authMiddleware.authorizeViewAccess,
+    authMiddleware.authorizeAdmin,
     async (req: Request, res: Response) => {
         await usuarioController.getUsuarios(req, res);
     }
@@ -34,7 +30,7 @@ router.post('/register',
 
 router.get('/:email',
     authMiddleware.authenticate,
-    authMiddleware.authorizeOwner,
+    authMiddleware.authorizeAdmin,
     async (req: Request, res: Response) => {
         await usuarioController.getUsuarioByEmail(req, res);
     }
@@ -42,7 +38,7 @@ router.get('/:email',
 
 router.put('/:email/senha',
     authMiddleware.authenticate,
-    authMiddleware.authorizeOwner,
+    authMiddleware.authorizeAdmin,
     async (req: Request, res: Response) => {
         await usuarioController.updateSenhaUsuario(req, res);
     }
@@ -50,12 +46,13 @@ router.put('/:email/senha',
 
 router.delete('/:email',
     authMiddleware.authenticate,
-    authMiddleware.authorizeOwner,
+    authMiddleware.authorizeAdmin,
     async (req: Request, res: Response) => {
         await usuarioController.deleteUsuario(req, res);
     }
 );
 
+// Rota protegida para todos os usuários autenticados
 router.post('/logout',
     authMiddleware.authenticate,
     async (req: Request, res: Response) => {

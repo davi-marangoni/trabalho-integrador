@@ -10,16 +10,12 @@ export class UsuarioController {
     }
 
     /**
-     * Busca usuários do sistema baseado no tipo do usuário logado
-     * - Tipo 1 (admin): retorna todos os usuários
-     * - Tipo 2 (comum): retorna apenas o próprio usuário
+     * Busca todos os usuários do sistema
+     * Apenas administradores (tipo 1) podem acessar
      */
     public async getUsuarios(req: Request, res: Response): Promise<void> {
         try {
-            const emailUsuarioLogado = req.emailUsuario!;
-            const tipoUsuarioLogado = req.tipoUsuario!;
-
-            const usuarios = await this.usuarioService.getUsuariosFiltrados(emailUsuarioLogado, tipoUsuarioLogado);
+            const usuarios = await this.usuarioService.getUsuarios();
 
             res.status(200).json({
                 success: true,
@@ -274,47 +270,6 @@ export class UsuarioController {
             res.status(500).json({
                 success: false,
                 message: 'Erro ao realizar login',
-                error: error instanceof Error ? error.message : 'Erro desconhecido'
-            });
-        }
-    }
-
-    /**
-     * Valida um token de sessão
-     */
-    public async validateToken(req: Request, res: Response): Promise<void> {
-        try {
-            const { token } = req.body;
-
-            if (!token) {
-                res.status(400).json({
-                    success: false,
-                    message: 'Token é obrigatório'
-                });
-                return;
-            }
-
-            const resultado = this.usuarioService.validateToken(token);
-
-            if (!resultado.valid) {
-                res.status(401).json({
-                    success: false,
-                    message: 'Token inválido ou expirado'
-                });
-                return;
-            }
-
-            res.status(200).json({
-                success: true,
-                data: {
-                    email: resultado.email
-                },
-                message: 'Token válido'
-            });
-        } catch (error) {
-            res.status(500).json({
-                success: false,
-                message: 'Erro ao validar token',
                 error: error instanceof Error ? error.message : 'Erro desconhecido'
             });
         }
