@@ -1,0 +1,453 @@
+{
+  "info": {
+    "name": "integrador",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "health",
+      "event": [],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "auth": {
+          "type": "noauth"
+        },
+        "description": "",
+        "url": {
+          "raw": "http://localhost:3000/health",
+          "protocol": "http",
+          "host": [
+            "localhost:3000"
+          ],
+          "path": [
+            "health"
+          ],
+          "query": [],
+          "variable": []
+        }
+      }
+    },
+    {
+      "name": "Usuario",
+      "item": [
+        {
+          "name": "Login",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "description": "",
+            "url": {
+              "raw": "http://localhost:3000/api/usuarios/login",
+              "protocol": "http",
+              "host": [
+                "localhost:3000"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "login"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"davim.chp@gmail.com\",\n  \"senha\": \"chp@0479\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "key": "token",
+                "value": "6fc0d255496e430534027ab9f4aa6614234e98201275d20b89c32fb3bcd9789a",
+                "type": "string"
+              }
+            },
+            "description": "",
+            "url": {
+              "raw": "http://localhost:3000/api/usuarios/logout",
+              "protocol": "http",
+              "host": [
+                "localhost:3000"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "logout"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "atualizarSenhaUsuario",
+          "event": [],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "key": "token",
+                "value": "6bc87e7c3759d5b3ab9a0262840f9848e1a38266ba5e3ead22e06670863253d4",
+                "type": "string"
+              }
+            },
+            "description": "",
+            "url": {
+              "raw": "http://localhost:3000/api/usuarios/usuarioteste@integrador.com/senha",
+              "protocol": "http",
+              "host": [
+                "localhost:3000"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "usuarioteste@integrador.com",
+                "senha"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"novaSenha\": \"novaSenha123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "cadastraUsuario",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "key": "token",
+                "value": "cc8b5564beb72322c8d1b6ee2bb01cdcc504122bf117a55bd2a9cd2a6401c79b",
+                "type": "string"
+              }
+            },
+            "description": "",
+            "url": {
+              "raw": "http://localhost:3000/api/usuarios/register",
+              "protocol": "http",
+              "host": [
+                "localhost:3000"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "register"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"usuarioteste@in2tegrado4r.com\",\n  \"senha\": \"chp@0479\",\n  \"tipo\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "excluirUsuario",
+          "event": [],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "key": "token",
+                "value": "6bc87e7c3759d5b3ab9a0262840f9848e1a38266ba5e3ead22e06670863253d4",
+                "type": "string"
+              }
+            },
+            "description": "",
+            "url": {
+              "raw": "http://localhost:3000/api/usuarios/usuarioteste@in2tegafasfasrado4r.com",
+              "protocol": "http",
+              "host": [
+                "localhost:3000"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "usuarioteste@in2tegafasfasrado4r.com"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "listaUsuario",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "key": "token",
+                "value": "6bc87e7c3759d5b3ab9a0262840f9848e1a38266ba5e3ead22e06670863253d4",
+                "type": "string"
+              }
+            },
+            "description": "",
+            "url": {
+              "raw": "http://localhost:3000/api/usuarios/usuarioteste@integrador.com",
+              "protocol": "http",
+              "host": [
+                "localhost:3000"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "usuarioteste@integrador.com"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "listaUsuarios",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "key": "token",
+                "value": "6bc87e7c3759d5b3ab9a0262840f9848e1a38266ba5e3ead22e06670863253d4",
+                "type": "string"
+              }
+            },
+            "description": "",
+            "url": {
+              "raw": "http://localhost:3000/api/usuarios",
+              "protocol": "http",
+              "host": [
+                "localhost:3000"
+              ],
+              "path": [
+                "api",
+                "usuarios"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Veiculo",
+      "item": [
+        {
+          "name": "cadastrarVeiculo",
+          "event": [],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "key": "token",
+                "value": "a3ea8ae56a21634ad0d03049efdbc74e9249c8db7830a678bfdd0d31483bd0d0",
+                "type": "string"
+              }
+            },
+            "description": "",
+            "url": {
+              "raw": "http://localhost:3000/api/veiculos",
+              "protocol": "http",
+              "host": [
+                "localhost:3000"
+              ],
+              "path": [
+                "api",
+                "veiculos"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"placa\": \"MVD8927\",\n  \"modelo\": \"Volvo\",\n  \"renavam\": \"92987050500\",\n  \"situacao\": \"A\",\n  \"tipo\": 6,\n  \"ano\": 2023,\n  \"marcaEquipamentoFrio\": \"Equipamento de Frio\",\n  \"anoEquipamentoFrio\": 2023,\n  \"quantidadePaletes\": 26,\n  \"idFrota\": null\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "editarVeiculo",
+          "event": [],
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "key": "token",
+                "value": "cabf87fa43a649eacb09647110f9672719eebf3aa0b4efdac52f563e7b9c1cc7",
+                "type": "string"
+              }
+            },
+            "description": "",
+            "url": {
+              "raw": "http://localhost:3000/api/veiculos/MVD8927",
+              "protocol": "http",
+              "host": [
+                "localhost:3000"
+              ],
+              "path": [
+                "api",
+                "veiculos",
+                "MVD8927"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"situacao\": \"I\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          }
+        },
+        {
+          "name": "listaTipos",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "key": "token",
+                "value": "a3ea8ae56a21634ad0d03049efdbc74e9249c8db7830a678bfdd0d31483bd0d0",
+                "type": "string"
+              }
+            },
+            "description": "",
+            "url": {
+              "raw": "http://localhost:3000/api/veiculos/tipos",
+              "protocol": "http",
+              "host": [
+                "localhost:3000"
+              ],
+              "path": [
+                "api",
+                "veiculos",
+                "tipos"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "listaVeiculo",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "key": "token",
+                "value": "a3ea8ae56a21634ad0d03049efdbc74e9249c8db7830a678bfdd0d31483bd0d0",
+                "type": "string"
+              }
+            },
+            "description": "",
+            "url": {
+              "raw": "http://localhost:3000/api/veiculos/ABC1234",
+              "protocol": "http",
+              "host": [
+                "localhost:3000"
+              ],
+              "path": [
+                "api",
+                "veiculos",
+                "ABC1234"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        },
+        {
+          "name": "listaVeiculos",
+          "event": [],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "bearer",
+              "bearer": {
+                "key": "token",
+                "value": "a3ea8ae56a21634ad0d03049efdbc74e9249c8db7830a678bfdd0d31483bd0d0",
+                "type": "string"
+              }
+            },
+            "description": "",
+            "url": {
+              "raw": "http://localhost:3000/api/veiculos",
+              "protocol": "http",
+              "host": [
+                "localhost:3000"
+              ],
+              "path": [
+                "api",
+                "veiculos"
+              ],
+              "query": [],
+              "variable": []
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": []
+}

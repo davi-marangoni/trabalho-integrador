@@ -1,0 +1,423 @@
+{
+  "name": "integrador",
+  "version": "1",
+  "items": [
+    {
+      "type": "http",
+      "name": "health",
+      "filename": "health.bru",
+      "seq": 1,
+      "request": {
+        "url": "http://localhost:3000/health",
+        "method": "GET",
+        "headers": [],
+        "params": [],
+        "body": {
+          "mode": "none",
+          "formUrlEncoded": [],
+          "multipartForm": [],
+          "file": []
+        },
+        "script": {},
+        "vars": {},
+        "assertions": [],
+        "tests": "",
+        "docs": "",
+        "auth": {
+          "mode": "inherit"
+        }
+      }
+    },
+    {
+      "type": "folder",
+      "name": "Usuario",
+      "filename": "Usuario",
+      "seq": 2,
+      "root": {
+        "meta": {
+          "name": "Usuario",
+          "seq": 2
+        }
+      },
+      "items": [
+        {
+          "type": "http",
+          "name": "Login",
+          "filename": "Login.bru",
+          "seq": 2,
+          "request": {
+            "url": "http://localhost:3000/api/usuarios/login",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"email\": \"davim.chp@gmail.com\",\n  \"senha\": \"chp@0479\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "inherit"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Logout",
+          "filename": "Logout.bru",
+          "seq": 3,
+          "request": {
+            "url": "http://localhost:3000/api/usuarios/logout",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "json": "{\n  \"token\": \"ebb762e60b75f1f3e7fb9c37c09067c75ac8beb8621c7c4409096d4132cc9c20\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "bearer",
+              "bearer": {
+                "token": "6fc0d255496e430534027ab9f4aa6614234e98201275d20b89c32fb3bcd9789a"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "atualizarSenhaUsuario",
+          "filename": "atualizarSenhaUsuario.bru",
+          "seq": 6,
+          "request": {
+            "url": "http://localhost:3000/api/usuarios/usuarioteste@integrador.com/senha",
+            "method": "PUT",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"novaSenha\": \"novaSenha123\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "bearer",
+              "bearer": {
+                "token": "6bc87e7c3759d5b3ab9a0262840f9848e1a38266ba5e3ead22e06670863253d4"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "cadastraUsuario",
+          "filename": "cadastraUsuario.bru",
+          "seq": 2,
+          "request": {
+            "url": "http://localhost:3000/api/usuarios/register",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"email\": \"usuarioteste@in2tegrado4r.com\",\n  \"senha\": \"chp@0479\",\n  \"tipo\": 1\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "bearer",
+              "bearer": {
+                "token": "cc8b5564beb72322c8d1b6ee2bb01cdcc504122bf117a55bd2a9cd2a6401c79b"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "excluirUsuario",
+          "filename": "excluirUsuario.bru",
+          "seq": 7,
+          "request": {
+            "url": "http://localhost:3000/api/usuarios/usuarioteste@in2tegafasfasrado4r.com",
+            "method": "DELETE",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "bearer",
+              "bearer": {
+                "token": "6bc87e7c3759d5b3ab9a0262840f9848e1a38266ba5e3ead22e06670863253d4"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "listaUsuario",
+          "filename": "listaUsuario.bru",
+          "seq": 5,
+          "request": {
+            "url": "http://localhost:3000/api/usuarios/usuarioteste@integrador.com",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "bearer",
+              "bearer": {
+                "token": "6bc87e7c3759d5b3ab9a0262840f9848e1a38266ba5e3ead22e06670863253d4"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "listaUsuarios",
+          "filename": "listaUsuarios.bru",
+          "seq": 4,
+          "request": {
+            "url": "http://localhost:3000/api/usuarios",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "bearer",
+              "bearer": {
+                "token": "6bc87e7c3759d5b3ab9a0262840f9848e1a38266ba5e3ead22e06670863253d4"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "Veiculo",
+      "filename": "Veiculo",
+      "seq": 3,
+      "root": {
+        "meta": {
+          "name": "Veiculo",
+          "seq": 3
+        }
+      },
+      "items": [
+        {
+          "type": "http",
+          "name": "cadastrarVeiculo",
+          "filename": "cadastrarVeiculo.bru",
+          "seq": 4,
+          "request": {
+            "url": "http://localhost:3000/api/veiculos",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"placa\": \"MVD8927\",\n  \"modelo\": \"Volvo\",\n  \"renavam\": \"92987050500\",\n  \"situacao\": \"A\",\n  \"tipo\": 6,\n  \"ano\": 2023,\n  \"marcaEquipamentoFrio\": \"Equipamento de Frio\",\n  \"anoEquipamentoFrio\": 2023,\n  \"quantidadePaletes\": 26,\n  \"idFrota\": null\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "bearer",
+              "bearer": {
+                "token": "a3ea8ae56a21634ad0d03049efdbc74e9249c8db7830a678bfdd0d31483bd0d0"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "editarVeiculo",
+          "filename": "editarVeiculo.bru",
+          "seq": 5,
+          "request": {
+            "url": "http://localhost:3000/api/veiculos/MVD8927",
+            "method": "PUT",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"situacao\": \"I\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "bearer",
+              "bearer": {
+                "token": "cabf87fa43a649eacb09647110f9672719eebf3aa0b4efdac52f563e7b9c1cc7"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "listaTipos",
+          "filename": "listaTipos.bru",
+          "seq": 1,
+          "request": {
+            "url": "http://localhost:3000/api/veiculos/tipos",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "bearer",
+              "bearer": {
+                "token": "a3ea8ae56a21634ad0d03049efdbc74e9249c8db7830a678bfdd0d31483bd0d0"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "listaVeiculo",
+          "filename": "listaVeiculo.bru",
+          "seq": 3,
+          "request": {
+            "url": "http://localhost:3000/api/veiculos/ABC1234",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "bearer",
+              "bearer": {
+                "token": "a3ea8ae56a21634ad0d03049efdbc74e9249c8db7830a678bfdd0d31483bd0d0"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "listaVeiculos",
+          "filename": "listaVeiculos.bru",
+          "seq": 2,
+          "request": {
+            "url": "http://localhost:3000/api/veiculos",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "bearer",
+              "bearer": {
+                "token": "a3ea8ae56a21634ad0d03049efdbc74e9249c8db7830a678bfdd0d31483bd0d0"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "environments": [],
+  "brunoConfig": {
+    "version": "1",
+    "name": "integrador",
+    "type": "collection",
+    "ignore": [
+      "node_modules",
+      ".git"
+    ],
+    "size": 0.0034780502319335938,
+    "filesCount": 15
+  }
+}
