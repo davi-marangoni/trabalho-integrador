@@ -10,11 +10,17 @@ export class UsuarioController {
     }
 
     /**
-     * Busca todos os usuários do sistema
+     * Busca usuários do sistema baseado no tipo do usuário logado
+     * - Tipo 1 (admin): retorna todos os usuários
+     * - Tipo 2 (comum): retorna apenas o próprio usuário
      */
     public async getUsuarios(req: Request, res: Response): Promise<void> {
         try {
-            const usuarios = await this.usuarioService.getUsuarios();
+            const emailUsuarioLogado = req.emailUsuario!;
+            const tipoUsuarioLogado = req.tipoUsuario!;
+
+            const usuarios = await this.usuarioService.getUsuariosFiltrados(emailUsuarioLogado, tipoUsuarioLogado);
+
             res.status(200).json({
                 success: true,
                 data: usuarios,
@@ -35,7 +41,7 @@ export class UsuarioController {
     public async getUsuarioByEmail(req: Request, res: Response): Promise<void> {
         try {
             const { email } = req.params;
-            
+
             if (!email) {
                 res.status(400).json({
                     success: false,
@@ -45,7 +51,7 @@ export class UsuarioController {
             }
 
             const usuario = await this.usuarioService.getUsuarioByEmail(email);
-            
+
             if (!usuario) {
                 res.status(404).json({
                     success: false,
@@ -117,7 +123,7 @@ export class UsuarioController {
             }
 
             const usuario = await this.usuarioService.createUsuario(req.body);
-            
+
             res.status(201).json({
                 success: true,
                 data: usuario,
@@ -146,7 +152,7 @@ export class UsuarioController {
         try {
             const { email } = req.params;
             const { novaSenha } = req.body;
-            
+
             if (!email) {
                 res.status(400).json({
                     success: false,
@@ -173,7 +179,7 @@ export class UsuarioController {
             }
 
             await this.usuarioService.updateSenhaUsuario(email, novaSenha);
-            
+
             res.status(200).json({
                 success: true,
                 message: 'Senha atualizada com sucesso'
@@ -200,7 +206,7 @@ export class UsuarioController {
     public async deleteUsuario(req: Request, res: Response): Promise<void> {
         try {
             const { email } = req.params;
-            
+
             if (!email) {
                 res.status(400).json({
                     success: false,
@@ -210,7 +216,7 @@ export class UsuarioController {
             }
 
             await this.usuarioService.deleteUsuario(email);
-            
+
             res.status(200).json({
                 success: true,
                 message: 'Usuário removido com sucesso'
@@ -247,7 +253,7 @@ export class UsuarioController {
             }
 
             const resultado = await this.usuarioService.login(email, senha);
-            
+
             if (!resultado) {
                 res.status(401).json({
                     success: false,
@@ -289,7 +295,7 @@ export class UsuarioController {
             }
 
             const resultado = this.usuarioService.validateToken(token);
-            
+
             if (!resultado.valid) {
                 res.status(401).json({
                     success: false,
@@ -330,7 +336,7 @@ export class UsuarioController {
             }
 
             this.usuarioService.revokeToken(token);
-            
+
             res.status(200).json({
                 success: true,
                 message: 'Logout realizado com sucesso'

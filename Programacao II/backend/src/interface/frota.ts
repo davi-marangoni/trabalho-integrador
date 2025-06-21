@@ -1,5 +1,5 @@
 
 export interface Frota {
     id: number;
-    usuarioAdicionou: string;
+    emailUsuarioAdicionou: string;
 }

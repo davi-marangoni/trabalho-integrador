@@ -3,15 +3,15 @@ import db from '../db/database';
 import crypto from 'crypto';
 
 // Interface para o token de sessão
-interface SessionToken {
+interface TokenSessao {
     token: string;
     email: string;
     tipo: number;
-    expiresAt: Date;
+    expiraEm: Date;
 }
 
 // Armazenamento simples de tokens em memória (em produção, usar Redis ou banco)
-const activeTokens = new Map<string, SessionToken>();
+const tokensAtivos = new Map<string, TokenSessao>();
 
 export class UsuarioService {
 
@@ -158,12 +158,12 @@ export class UsuarioService {
         const token = crypto.createHash('sha256').update(tokenData).digest('hex');
 
         // Armazena o token com expiração de 24 horas
-        const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
-        activeTokens.set(token, {
+        const expiraEm = new Date(Date.now() + 24 * 60 * 60 * 1000);
+        tokensAtivos.set(token, {
             token,
             email,
             tipo,
-            expiresAt
+            expiraEm
         });
 
         return token;
@@ -173,22 +173,22 @@ export class UsuarioService {
      * Valida um token de sessão
      */
     public validateToken(token: string): { valid: boolean; email?: string; tipo?: number } {
-        const sessionToken = activeTokens.get(token);
+        const tokenSessao = tokensAtivos.get(token);
 
-        if (!sessionToken) {
+        if (!tokenSessao) {
             return { valid: false };
         }
 
         // Verifica se o token expirou
-        if (new Date() > sessionToken.expiresAt) {
-            activeTokens.delete(token);
+        if (new Date() > tokenSessao.expiraEm) {
+            tokensAtivos.delete(token);
             return { valid: false };
         }
 
         return {
             valid: true,
-            email: sessionToken.email,
-            tipo: sessionToken.tipo
+            email: tokenSessao.email,
+            tipo: tokenSessao.tipo
         };
     }
 
@@ -196,16 +196,16 @@ export class UsuarioService {
      * Remove um token específico (logout)
      */
     public revokeToken(token: string): void {
-        activeTokens.delete(token);
+        tokensAtivos.delete(token);
     }
 
     /**
      * Remove todos os tokens de um usuário
      */
     public revokeAllUserTokens(email: string): void {
-        for (const [token, sessionToken] of activeTokens.entries()) {
-            if (sessionToken.email === email) {
-                activeTokens.delete(token);
+        for (const [token, tokenSessao] of tokensAtivos.entries()) {
+            if (tokenSessao.email === email) {
+                tokensAtivos.delete(token);
             }
         }
     }
@@ -214,11 +214,36 @@ export class UsuarioService {
      * Limpa tokens expirados (método de limpeza)
      */
     public cleanExpiredTokens(): void {
-        const now = new Date();
-        for (const [token, sessionToken] of activeTokens.entries()) {
-            if (now > sessionToken.expiresAt) {
-                activeTokens.delete(token);
+        const agora = new Date();
+        for (const [token, tokenSessao] of tokensAtivos.entries()) {
+            if (agora > tokenSessao.expiraEm) {
+                tokensAtivos.delete(token);
             }
+        }
+    }
+
+    /**
+     * Busca usuários baseado no tipo do usuário logado
+     * - Tipo 1 (admin): retorna todos os usuários
+     * - Tipo 2 (comum): retorna apenas o próprio usuário
+     */
+    public async getUsuariosFiltrados(emailUsuarioLogado: string, tipoUsuarioLogado: number): Promise<Usuario[]> {
+        try {
+            if (tipoUsuarioLogado === 1) {
+                // Administrador pode ver todos os usuários
+                return await this.getUsuarios();
+            } else {
+                // Usuário comum só pode ver a si mesmo
+                const usuario = await this.getUsuarioByEmail(emailUsuarioLogado);
+                if (usuario) {
+                    // Remove a senha por segurança
+                    const { senha: _, ...usuarioSemSenha } = usuario;
+                    return [usuarioSemSenha as Usuario];
+                }
+                return [];
+            }
+        } catch (error) {
+            throw new Error(`Erro ao buscar usuários filtrados: ${error}`);
         }
     }
 }

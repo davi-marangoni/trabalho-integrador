@@ -18,6 +18,7 @@ router.post('/validate-token', async (req: Request, res: Response) => {
 // Rotas protegidas (precisam de autenticação)
 router.get('/',
     authMiddleware.authenticate,
+    authMiddleware.authorizeViewAccess,
     async (req: Request, res: Response) => {
         await usuarioController.getUsuarios(req, res);
     }

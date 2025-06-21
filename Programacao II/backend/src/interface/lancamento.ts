@@ -4,8 +4,9 @@ export interface Lancamento {
     valor: number;
     data: Date;
     arquivo: string;
-    tipoLancamentoId: number;
+    idTipoLancamento: number;
     placaVeiculo: string;
+    emailUsuarioAdicionou: string;
 }
 
 export interface Abastecimento extends Lancamento {
@@ -14,7 +15,7 @@ export interface Abastecimento extends Lancamento {
     valorUnidade: number;
     quantidadeLitros: number;
     valorTotal: number;
-    kmRodados: number;
+    quilometrosRodados: number;
 }
 
 export interface ConhecimentoTransporte extends Lancamento {
