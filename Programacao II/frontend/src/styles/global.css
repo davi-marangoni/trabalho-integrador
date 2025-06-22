@@ -8,41 +8,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Estilos básicos da sidebar */
 .sidebar {
   min-height: 100vh;
   background-color: #f8f9fa;
   border-right: 1px solid #dee2e6;
   display: flex;
   flex-direction: column;
-  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), min-width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
-}
-
-.sidebar-col {
-  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1), min-width 0.4s cubic-bezier(0.4, 0, 0.2, 1), max-width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.sidebar-col.collapsed {
-  width: 70px !important;
-  min-width: 70px !important;
-  max-width: 70px !important;
-}
-
-.sidebar-col.expanded {
-  width: 250px !important;
-  min-width: 250px !important;
-  max-width: 250px !important;
-}
-
-.sidebar.collapsed {
-  width: 70px !important;
-  min-width: 70px !important;
-}
-
-.sidebar.expanded {
-  width: 250px;
-  min-width: 250px;
 }
 
 .sidebar .nav {
@@ -129,12 +103,7 @@ body {
   background-color: #0b5ed7;
 }
 
-.main-content {
-  padding: 20px;
-  min-height: 100vh;
-  transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
+/* Cards e botões */
 .card {
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
   border: 1px solid rgba(0, 0, 0, 0.125);

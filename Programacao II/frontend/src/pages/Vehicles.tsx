@@ -1,18 +1,195 @@
-import React from 'react'
-import { Container, Row, Col, Card, Button, Table } from 'react-bootstrap'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
+import { Container, Row, Col, Card, Button } from 'react-bootstrap'
+import { ReactTabulator, ColumnDefinition } from 'react-tabulator'
+import 'react-tabulator/lib/styles.css'
+import 'react-tabulator/css/tabulator_bootstrap4.min.css'
+import '../styles/tabulator.css'
+import { servicoApi } from '../services/api'
+import { useSidebar } from '../components/Layout'
+
+interface Veiculo {
+  placa: string
+  modelo: string
+  renavam: string
+  situacao: string
+  tipo: number
+  ano: number
+  emailUsuarioAdicionou: string
+  trucado?: string
+  idFrota?: number | null
+  marcaEquipamentoFrio?: string
+  anoEquipamentoFrio?: number
+  quantidadePaletes?: number
+}
 
 const Veiculos: React.FC = () => {
+  const [veiculos, setVeiculos] = useState<Veiculo[]>([])
+  const [loading, setLoading] = useState(true)
+  const tableRef = useRef<any>(null)
+  const resizeTimeoutRef = useRef<number | null>(null)
+  const { isCollapsed } = useSidebar()
+
+  // Função debounced para redimensionar tabela
+  const debouncedResize = useCallback(() => {
+    if (resizeTimeoutRef.current) {
+      clearTimeout(resizeTimeoutRef.current)
+    }
+
+    resizeTimeoutRef.current = setTimeout(() => {
+      if (tableRef.current?.table) {
+        try {
+          tableRef.current.table.redraw(true)
+        } catch (error) {
+          console.log('Erro ao redimensionar tabela:', error)
+        }
+      }
+    }, 300)
+  }, [])
+
+  // Mapeamento dos tipos de veículos
+  const tiposVeiculo = {
+    1: 'Veículo de Passeio',
+    2: 'Moto',
+    3: 'Truck',
+    4: 'Caçamba',
+    5: 'Cavalinho',
+    6: 'Carreta Frigorificada'
+  }
+
+  // Configuração das colunas do Tabulator
+  const columns: ColumnDefinition[] = [
+    {
+      title: 'Placa',
+      field: 'placa',
+      minWidth: 120,
+      headerFilter: 'input'
+    },
+    {
+      title: 'Tipo',
+      field: 'tipo',
+      minWidth: 200,
+      headerFilter: 'select',
+      headerFilterParams: {
+        values: {
+          '': 'Todos',
+          '1': 'Veículo de Passeio',
+          '2': 'Moto',
+          '3': 'Truck',
+          '4': 'Caçamba',
+          '5': 'Cavalinho',
+          '6': 'Carreta Frigorificada'
+        }
+      },
+      formatter: (cell: any) => {
+        const tipo = cell.getValue()
+        return tiposVeiculo[tipo as keyof typeof tiposVeiculo] || 'Desconhecido'
+      }
+    },
+    {
+      title: 'Modelo',
+      field: 'modelo',
+      minWidth: 150,
+      headerFilter: 'input'
+    },
+    {
+      title: 'Ano',
+      field: 'ano',
+      minWidth: 100,
+      headerFilter: 'input'
+    },
+    {
+      title: 'Situação',
+      field: 'situacao',
+      minWidth: 120,
+      headerFilter: 'select',
+      headerFilterParams: {
+        values: {
+          '': 'Todos',
+          'A': 'Ativo',
+          'I': 'Inativo'
+        }
+      },
+      formatter: (cell: any) => {
+        const situacao = cell.getValue()
+        const variant = situacao === 'A' ? 'success' : 'danger'
+        const texto = situacao === 'A' ? 'Ativo' : 'Inativo'
+        return `<span class="badge bg-${variant}">${texto}</span>`
+      }
+    },
+    {
+      title: 'Ações',
+      field: 'acoes',
+      width: 120,
+      headerSort: false,
+      formatter: () => {
+        return '<button class="btn btn-sm btn-outline-primary edit-btn" title="Editar veículo"><i class="fas fa-edit me-1"></i>Editar</button>'
+      },
+      cellClick: (e: any, cell: any) => {
+        if (e.target.closest('.edit-btn')) {
+          const veiculo = cell.getRow().getData()
+          handleEditVeiculo(veiculo)
+        }
+      }
+    }
+  ]
+
+  // Função para buscar veículos da API
+  const fetchVeiculos = async () => {
+    try {
+      setLoading(true)
+      const result = await servicoApi.get<{ success: boolean; data: Veiculo[]; message: string }>('/veiculos')
+
+      if (result.success) {
+        setVeiculos(result.data)
+      } else {
+        console.error('Erro ao buscar veículos:', result.message)
+      }
+    } catch (error) {
+      console.error('Erro na requisição:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleEditVeiculo = (veiculo: Veiculo) => {
+    console.log('Editando veículo:', veiculo)
+  }
+
+  useEffect(() => {
+    fetchVeiculos()
+  }, [])
+
+  // Efeito para redimensionar tabela quando sidebar muda
+  useEffect(() => {
+    debouncedResize()
+  }, [isCollapsed, debouncedResize])
+
+  // Listener para mudanças de tamanho da janela e cleanup
+  useEffect(() => {
+    const handleResize = () => debouncedResize()
+
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+      if (resizeTimeoutRef.current) {
+        clearTimeout(resizeTimeoutRef.current)
+      }
+    }
+  }, [debouncedResize])
+
   return (
-    <Container fluid>
-      <Row className="mb-4">
-        <Col>
-          <div className="d-flex justify-content-between align-items-center">
-            <h1>Veículos</h1>
-            <Button variant="primary">Adicionar Veículo</Button>
-          </div>
-        </Col>
-      </Row>
-      
+    <div className="vehicles-container">
+      <Container fluid>
+        <Row className="mb-4">
+          <Col>
+            <div className="d-flex justify-content-between align-items-center">
+              <h1>Veículos</h1>
+              <Button variant="primary">Adicionar Veículo</Button>
+            </div>
+          </Col>
+        </Row>
+
       <Row>
         <Col>
           <Card>
@@ -20,31 +197,41 @@ const Veiculos: React.FC = () => {
               <Card.Title>Lista de Veículos</Card.Title>
             </Card.Header>
             <Card.Body>
-              <Table striped bordered hover responsive>
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Placa</th>
-                    <th>Modelo</th>
-                    <th>Marca</th>
-                    <th>Ano</th>
-                    <th>Status</th>
-                    <th>Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td colSpan={7} className="text-center text-muted">
-                      Nenhum veículo encontrado
-                    </td>
-                  </tr>
-                </tbody>
-              </Table>
+              {loading ? (
+                <div className="text-center p-4">
+                  <div className="spinner-border" role="status">
+                    <span className="visually-hidden">Carregando...</span>
+                  </div>
+                </div>
+              ) : (
+                <ReactTabulator
+                  ref={tableRef}
+                  data={veiculos}
+                  columns={columns}
+                  layout="fitDataStretch"
+                  pagination="local"
+                  paginationSize={15}
+                  paginationSizeSelector={[10, 15, 25, 50, 100]}
+                  movableColumns={true}
+                  resizableRows={false}
+                  responsiveLayout="hide"
+                  placeholder="Nenhum veículo encontrado"
+                  options={{
+                    height: '600px',
+                    autoResize: true,
+                    dataLoaded: () => {
+                      // Redimensiona após dados carregados
+                      setTimeout(() => debouncedResize(), 100)
+                    }
+                  }}
+                />
+              )}
             </Card.Body>
           </Card>
         </Col>
       </Row>
     </Container>
+    </div>
   )
 }
 

@@ -14,11 +14,15 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
     "bootstrap": "^5.3.7",
     "react": "^19.1.0",
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.2",
+    "react-tabulator": "^0.21.0",
     "recharts": "^2.15.4"
   },
   "devDependencies": {

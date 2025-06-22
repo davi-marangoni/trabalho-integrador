@@ -3,6 +3,14 @@ import { Nav, Button } from 'react-bootstrap'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { useSidebar } from './Layout'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faChartBar,
+  faTruck,
+  faSignOutAlt,
+  faBars,
+  faChevronLeft
+} from '@fortawesome/free-solid-svg-icons'
 
 const Sidebar: React.FC = () => {
   const location = useLocation()
@@ -11,8 +19,8 @@ const Sidebar: React.FC = () => {
   const { isCollapsed, setIsCollapsed } = useSidebar()
 
   const itensMenu = [
-    { caminho: '/', label: 'Dashboard', icone: '📊' },
-    { caminho: '/veiculos', label: 'Veículos', icone: '🚛' },
+    { caminho: '/', label: 'Dashboard', icone: faChartBar },
+    { caminho: '/veiculos', label: 'Veículos', icone: faTruck },
   ]
 
   const lidarComLogout = async () => {
@@ -29,8 +37,8 @@ const Sidebar: React.FC = () => {
       <Nav defaultActiveKey="/" className="flex-column p-3 h-100">
         {/* Botão toggle - agora no topo da área de navegação */}
         <div className={`d-flex mb-3 ${isCollapsed ? 'justify-content-center' : 'justify-content-end'}`}>
-          <div className="toggle-btn" onClick={toggleSidebar}>
-            {isCollapsed ? '☰' : '×'}
+          <div className="toggle-btn" onClick={toggleSidebar} style={{ cursor: 'pointer' }}>
+            <FontAwesomeIcon icon={isCollapsed ? faBars : faChevronLeft} size="lg" />
           </div>
         </div>
 
@@ -44,7 +52,7 @@ const Sidebar: React.FC = () => {
               className={`mb-2 d-flex align-items-center ${isCollapsed ? 'justify-content-center' : ''}`}
               title={isCollapsed ? item.label : ''}
             >
-              <span className={isCollapsed ? '' : 'me-2'}>{item.icone}</span>
+              <FontAwesomeIcon icon={item.icone} className={isCollapsed ? '' : 'me-2'} />
               {!isCollapsed && <span className="nav-text">{item.label}</span>}
             </Nav.Link>
           ))}
@@ -53,7 +61,7 @@ const Sidebar: React.FC = () => {
         {/* Área inferior com informações do usuário e botão sair */}
         <div className="mt-auto">
           <hr className="my-3" />
-          
+
           {/* Informações do usuário - agora embaixo */}
           {!isCollapsed && (
             <div className="mb-3 p-2 bg-light rounded user-info">
@@ -71,7 +79,8 @@ const Sidebar: React.FC = () => {
             className={`w-100 d-flex align-items-center ${isCollapsed ? 'justify-content-center' : ''}`}
             title={isCollapsed ? 'Sair' : ''}
           >
-            🚪 {!isCollapsed && <span className="logout-text ms-1">Sair</span>}
+            <FontAwesomeIcon icon={faSignOutAlt} />
+            {!isCollapsed && <span className="logout-text ms-1">Sair</span>}
           </Button>
         </div>
       </Nav>
