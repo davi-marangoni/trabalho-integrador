@@ -17,7 +17,7 @@ const PaginaNaoEncontrada: React.FC = () => {
                 A página que você está procurando não existe.
               </p>
               <Button variant="primary" onClick={() => navegar('/')}>
-                Voltar ao Dashboard
+                Voltar ao Início
               </Button>
             </Card.Body>
           </Card>

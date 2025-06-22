@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Usuario, SolicitacaoLogin, RespostaLogin } from '../types'
+import { servicoApi } from '../services/api'
 
 export const useAuth = () => {
   const [usuario, setUsuario] = useState<Usuario | null>(null)
@@ -10,7 +11,7 @@ export const useAuth = () => {
   useEffect(() => {
     const token = localStorage.getItem('tokenAuth')
     const dadosUsuario = localStorage.getItem('dadosUsuario')
-    
+
     if (token && dadosUsuario) {
       try {
         setUsuario(JSON.parse(dadosUsuario))
@@ -20,7 +21,7 @@ export const useAuth = () => {
         localStorage.removeItem('dadosUsuario')
       }
     }
-    
+
     setCarregando(false)
   }, [])
 
@@ -29,38 +30,48 @@ export const useAuth = () => {
     setErro(null)
 
     try {
-      // TODO: Implementar chamada real para a API
-      // const resposta = await servicoApi.post<RespostaLogin>('/auth/login', credenciais)
-      
-      // Simulação temporária
-      const resposta: RespostaLogin = {
-        token: 'fake-jwt-token',
-        usuario: {
-          id: 1,
-          nome: 'Usuário Teste',
-          email: credenciais.email,
-          tipo: 'admin',
-          ativo: true
-        }
+      // Usa o método POST genérico
+      const resposta = await servicoApi.post<RespostaLogin>('/usuarios/login', {
+        email: credenciais.email,
+        senha: credenciais.senha
+      })
+
+      if (!resposta.success) {
+        setErro(resposta.message || 'Erro ao fazer login')
+        return false
       }
 
-      localStorage.setItem('tokenAuth', resposta.token)
-      localStorage.setItem('dadosUsuario', JSON.stringify(resposta.usuario))
-      setUsuario(resposta.usuario)
-      
+      // Salva os dados no localStorage
+      localStorage.setItem('tokenAuth', resposta.data.token)
+      localStorage.setItem('dadosUsuario', JSON.stringify(resposta.data.usuario))
+      setUsuario(resposta.data.usuario)
+
       return true
     } catch (err) {
-      setErro('Erro ao fazer login')
+      console.error('Erro no login:', err)
+      setErro('Erro ao fazer login. Verifique suas credenciais.')
       return false
     } finally {
       setCarregando(false)
     }
   }
 
-  const logout = () => {
-    localStorage.removeItem('tokenAuth')
-    localStorage.removeItem('dadosUsuario')
-    setUsuario(null)
+  const logout = async () => {
+    try {
+      // Tenta fazer logout na API se houver token usando o método POST genérico
+      const token = localStorage.getItem('tokenAuth')
+      if (token) {
+        await servicoApi.post('/usuarios/logout')
+      }
+    } catch (err) {
+      console.error('Erro ao fazer logout na API:', err)
+      // Continua com o logout local mesmo se a API falhar
+    } finally {
+      // Remove dados locais
+      localStorage.removeItem('tokenAuth')
+      localStorage.removeItem('dadosUsuario')
+      setUsuario(null)
+    }
   }
 
   const estaAutenticado = !!usuario

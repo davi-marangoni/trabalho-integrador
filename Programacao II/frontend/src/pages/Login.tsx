@@ -1,32 +1,21 @@
 import React, { useState } from 'react'
 import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
-  const [carregando, setCarregando] = useState(false)
-  const [erro, setErro] = useState('')
+  const { login, carregando, erro } = useAuth()
   const navegar = useNavigate()
 
   const lidarComEnvio = async (e: React.FormEvent) => {
     e.preventDefault()
-    setCarregando(true)
-    setErro('')
 
-    try {
-      // TODO: Implementar chamada para API de login
-      console.log('Tentativa de login:', { email, senha })
-      
-      // Simulação de login (remover quando implementar API)
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      // Por enquanto, redireciona direto para o dashboard
+    const sucesso = await login({ email, senha })
+
+    if (sucesso) {
       navegar('/')
-    } catch (err) {
-      setErro('Erro ao fazer login. Verifique suas credenciais.')
-    } finally {
-      setCarregando(false)
     }
   }
 

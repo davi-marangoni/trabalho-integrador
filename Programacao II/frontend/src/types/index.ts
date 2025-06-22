@@ -1,13 +1,10 @@
-// Tipos básicos do sistema
 export interface Usuario {
-  id: number
-  nome: string
   email: string
+  tipo: number // 1 = forte, 2 = fraco
+}
+
+export interface UsuarioCompleto extends Usuario {
   senha?: string
-  tipo: 'admin' | 'usuario'
-  ativo: boolean
-  criadoEm?: string
-  atualizadoEm?: string
 }
 
 export interface Veiculo {
@@ -37,14 +34,20 @@ export interface SolicitacaoLogin {
   senha: string
 }
 
-export interface RespostaLogin {
-  token: string
+export interface DadosLogin {
   usuario: Usuario
+  token: string
 }
 
-export interface RespostaApi<T> {
-  sucesso: boolean
-  dados?: T
-  mensagem?: string
-  erro?: string
+export interface RespostaLogin {
+  success: boolean
+  data: DadosLogin
+  message: string
+}
+
+// Tipo genérico para todas as respostas da API
+export interface RespostaApi<T = any> {
+  success: boolean
+  data?: T
+  message: string
 }
