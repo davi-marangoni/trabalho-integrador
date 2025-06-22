@@ -12,6 +12,15 @@ body {
   min-height: 100vh;
   background-color: #f8f9fa;
   border-right: 1px solid #dee2e6;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar .nav {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
 }
 
 .main-content {

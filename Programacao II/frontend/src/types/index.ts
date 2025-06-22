@@ -51,3 +51,29 @@ export interface RespostaApi<T = any> {
   data?: T
   message: string
 }
+
+// Interfaces para o Dashboard
+export interface MetricasDashboard {
+  totalEntradas: number
+  totalSaidas: number
+  saldoTotal: number
+  veiculosAtivos: number
+}
+
+export interface DadosFinanceiros {
+  nome: string
+  valor: number
+  cor: string
+}
+
+export interface DadosMovimentacaoDiaria {
+  data: string
+  entradas: number
+  saidas: number
+}
+
+export interface DadosDashboard {
+  metricas: MetricasDashboard
+  distribuicaoFinanceira: DadosFinanceiros[]
+  movimentacaoDiaria: DadosMovimentacaoDiaria[]
+}
