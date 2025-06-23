@@ -8,10 +8,6 @@
 - **pg-promise** – Integração com banco de dados PostgreSQL.
 - **dotenv** – Gerenciamento de variáveis de ambiente.
 
-## Padronização de Código
-
-O projeto utiliza o arquivo `.editorconfig` para garantir a padronização de formatação do código-fonte entre diferentes editores e desenvolvedores. Recomenda-se que seu editor esteja configurado para respeitar essas regras.
-
 ## Estrutura do Projeto
 
 ```
@@ -69,6 +65,11 @@ As coleções de testes de API estão disponíveis na pasta `doc/`:
 - `integradorPostman.json` (Postman)
 
 Recomendamos o uso do [Bruno API Client](https://www.usebruno.com/) por ser open source, rápido e leve, mas a coleção também pode ser importada no Postman.
+
+## Padrão de Código
+
+- O projeto usa um arquivo `.editorconfig` para padronizar indentação e finais de linha.
+- Recomenda-se instalar a extensão [EditorConfig](https://editorconfig.org/#download) na sua IDE para garantir o padrão de código.
 
 ## Observações
 - Mantenha o padrão de código definido no `.editorconfig`.
