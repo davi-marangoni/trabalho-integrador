@@ -1,9 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
-import { UsuarioService } from '../service/usuario.service';
+import passport = require('../config/passport.config');
+import { Usuario } from '../interface/usuario';
 
 // Extende a interface Request para incluir informações do usuário
 declare global {
     namespace Express {
+        interface User extends Omit<Usuario, 'senha'> {}
         interface Request {
             emailUsuario?: string;
             tipoUsuario?: number;
@@ -12,62 +14,34 @@ declare global {
 }
 
 export class AuthMiddleware {
-    private usuarioService: UsuarioService;
-
-    constructor() {
-        this.usuarioService = new UsuarioService();
-    }
-
     /**
-     * Middleware para verificar autenticação via token
+     * Middleware para verificar autenticação via JWT usando Passport
      */
     public authenticate = (req: Request, res: Response, next: NextFunction): void => {
-        try {
-            // Busca o token no header Authorization
-            const authHeader = req.headers.authorization;
-
-            if (!authHeader) {
-                res.status(401).json({
+        passport.authenticate('jwt', { session: false }, (error: any, user: Express.User | false, info: any) => {
+            if (error) {
+                return res.status(500).json({
                     success: false,
-                    message: 'Token de acesso requerido. Use o header Authorization: Bearer <token>'
+                    message: 'Erro interno ao validar token',
+                    error: error.message
                 });
-                return;
             }
 
-            // Extrai o token do formato "Bearer <token>"
-            const token = authHeader.replace('Bearer ', '');
-
-            if (!token) {
-                res.status(401).json({
-                    success: false,
-                    message: 'Formato do token inválido. Use: Bearer <token>'
-                });
-                return;
-            }
-
-            // Valida o token
-            const validation = this.usuarioService.validateToken(token);
-
-            if (!validation.valid) {
-                res.status(401).json({
+            if (!user) {
+                return res.status(401).json({
                     success: false,
                     message: 'Token inválido ou expirado'
                 });
-                return;
             }
 
-            // Adiciona o email e tipo do usuário ao request para uso nas rotas
-            req.emailUsuario = validation.email;
-            req.tipoUsuario = validation.tipo;
+            // Adiciona o usuário ao request
+            req.user = user;
+            // Mantém compatibilidade com código existente
+            req.emailUsuario = user.email;
+            req.tipoUsuario = user.tipo;
 
             next();
-        } catch (error) {
-            res.status(500).json({
-                success: false,
-                message: 'Erro interno ao validar token',
-                error: error instanceof Error ? error.message : 'Erro desconhecido'
-            });
-        }
+        })(req, res, next);
     };
 
     /**

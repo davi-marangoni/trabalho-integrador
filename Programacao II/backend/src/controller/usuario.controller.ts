@@ -1,12 +1,15 @@
 //Controller para manipulação de dados do usuário
 import { Request, Response } from 'express';
 import { UsuarioService } from '../service/usuario.service';
+import { AuthService } from '../service/auth.service';
 
 export class UsuarioController {
     private usuarioService: UsuarioService;
+    private authService: AuthService;
 
     constructor() {
         this.usuarioService = new UsuarioService();
+        this.authService = new AuthService();
     }
 
     /**
@@ -234,7 +237,7 @@ export class UsuarioController {
     }
 
     /**
-     * Realiza o login do usuário e retorna um token
+     * Realiza o login do usuário e retorna um token JWT
      */
     public async login(req: Request, res: Response): Promise<void> {
         try {
@@ -248,7 +251,7 @@ export class UsuarioController {
                 return;
             }
 
-            const resultado = await this.usuarioService.login(email, senha);
+            const resultado = await this.authService.login(email, senha);
 
             if (!resultado) {
                 res.status(401).json({
@@ -276,24 +279,13 @@ export class UsuarioController {
     }
 
     /**
-     * Realiza o logout do usuário (remove o token)
+     * Realiza o logout do usuário
+     * Com JWT, o logout é tratado pelo cliente removendo o token
      */
     public async logout(req: Request, res: Response): Promise<void> {
         try {
-            // Extrai o token do header Authorization
-            const authHeader = req.headers.authorization;
-            const token = authHeader?.replace('Bearer ', '');
-
-            if (!token) {
-                res.status(400).json({
-                    success: false,
-                    message: 'Token não encontrado no header de autorização'
-                });
-                return;
-            }
-
-            this.usuarioService.revokeToken(token);
-
+            // Com JWT, não é necessário revogar tokens no servidor
+            // O cliente deve simplesmente descartar o token
             res.status(200).json({
                 success: true,
                 message: 'Logout realizado com sucesso'

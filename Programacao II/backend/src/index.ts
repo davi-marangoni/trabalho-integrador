@@ -1,9 +1,9 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import passport = require('./config/passport.config');
 import usuarioRouter from './routes/usuario.router';
 import veiculoRouter from './routes/veiculo.router';
 import lancamentoRouter from './routes/lancamento.router';
-import { UsuarioService } from './service/usuario.service';
 
 // Carrega as variáveis de ambiente
 dotenv.config();
@@ -27,6 +27,9 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Inicializa o Passport
+app.use(passport.initialize());
 
 // Middleware para logs de requisições
 app.use((req, res, next) => {
@@ -65,12 +68,6 @@ app.use((error: Error, req: express.Request, res: express.Response, next: expres
         error: process.env.NODE_ENV === 'development' ? error.message : 'Erro interno'
     });
 });
-
-// Função para limpeza periódica de tokens expirados
-const usuarioService = new UsuarioService();
-setInterval(() => {
-    usuarioService.cleanExpiredTokens();
-}, 60 * 60 * 1000); // Limpa a cada hora
 
 // Inicia o servidor
 app.listen(PORT, () => {
