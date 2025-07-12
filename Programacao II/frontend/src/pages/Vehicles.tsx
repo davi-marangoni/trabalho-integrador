@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { Container, Row, Col, Card, Button } from 'react-bootstrap'
 import { ReactTabulator, ColumnDefinition } from 'react-tabulator'
-import 'react-tabulator/lib/styles.css'
-import 'react-tabulator/css/tabulator_bootstrap4.min.css'
-import '../styles/tabulator.css'
+import 'react-tabulator/css/tabulator_bootstrap5.min.css'
+
 import { servicoApi } from '../services/api'
 import { useSidebar } from '../components/Layout'
+import { TipoVeiculo } from '../types'
 
 interface Veiculo {
   placa: string
@@ -24,6 +24,7 @@ interface Veiculo {
 
 const Veiculos: React.FC = () => {
   const [veiculos, setVeiculos] = useState<Veiculo[]>([])
+  const [tiposVeiculo, setTiposVeiculo] = useState<TipoVeiculo[]>([])
   const [loading, setLoading] = useState(true)
   const tableRef = useRef<any>(null)
   const resizeTimeoutRef = useRef<number | null>(null)
@@ -46,14 +47,34 @@ const Veiculos: React.FC = () => {
     }, 300)
   }, [])
 
-  // Mapeamento dos tipos de veículos
-  const tiposVeiculo = {
-    1: 'Veículo de Passeio',
-    2: 'Moto',
-    3: 'Truck',
-    4: 'Caçamba',
-    5: 'Cavalinho',
-    6: 'Carreta Frigorificada'
+  // Função para buscar tipos de veículos da API
+  const fetchTiposVeiculos = async () => {
+    try {
+      const result = await servicoApi.get<{ success: boolean; data: TipoVeiculo[]; message: string }>('/veiculos/tipos')
+      
+      if (result.success) {
+        setTiposVeiculo(result.data)
+      } else {
+        console.error('Erro ao buscar tipos de veículos:', result.message)
+      }
+    } catch (error) {
+      console.error('Erro na requisição de tipos:', error)
+    }
+  }
+
+  // Função para obter nome do tipo de veículo
+  const getTipoVeiculoNome = (id: number): string => {
+    const tipo = tiposVeiculo.find(t => t.id === id)
+    return tipo ? tipo.nome : 'Desconhecido'
+  }
+
+  // Função para gerar opções do filtro de tipos
+  const getTipoVeiculoFilterOptions = () => {
+    const options: { [key: string]: string } = { '': 'Todos' }
+    tiposVeiculo.forEach(tipo => {
+      options[tipo.id.toString()] = tipo.nome
+    })
+    return options
   }
 
   // Configuração das colunas do Tabulator
@@ -62,46 +83,43 @@ const Veiculos: React.FC = () => {
       title: 'Placa',
       field: 'placa',
       minWidth: 120,
-      headerFilter: 'input'
+      headerFilter: 'input',
+      headerSort: true
     },
     {
       title: 'Tipo',
       field: 'tipo',
       minWidth: 200,
       headerFilter: 'select',
+      headerSort: true,
       headerFilterParams: {
-        values: {
-          '': 'Todos',
-          '1': 'Veículo de Passeio',
-          '2': 'Moto',
-          '3': 'Truck',
-          '4': 'Caçamba',
-          '5': 'Cavalinho',
-          '6': 'Carreta Frigorificada'
-        }
+        values: getTipoVeiculoFilterOptions()
       },
       formatter: (cell: any) => {
         const tipo = cell.getValue()
-        return tiposVeiculo[tipo as keyof typeof tiposVeiculo] || 'Desconhecido'
+        return getTipoVeiculoNome(tipo)
       }
     },
     {
       title: 'Modelo',
       field: 'modelo',
       minWidth: 150,
-      headerFilter: 'input'
+      headerFilter: 'input',
+      headerSort: true
     },
     {
       title: 'Ano',
       field: 'ano',
       minWidth: 100,
-      headerFilter: 'input'
+      headerFilter: 'input',
+      headerSort: true
     },
     {
       title: 'Situação',
       field: 'situacao',
       minWidth: 120,
       headerFilter: 'select',
+      headerSort: true,
       headerFilterParams: {
         values: {
           '': 'Todos',
@@ -151,12 +169,18 @@ const Veiculos: React.FC = () => {
     }
   }
 
+  // Função para inicializar dados
+  const initializeData = async () => {
+    await fetchTiposVeiculos()
+    await fetchVeiculos()
+  }
+
   const handleEditVeiculo = (veiculo: Veiculo) => {
     console.log('Editando veículo:', veiculo)
   }
 
   useEffect(() => {
-    fetchVeiculos()
+    initializeData()
   }, [])
 
   // Efeito para redimensionar tabela quando sidebar muda
@@ -204,27 +228,29 @@ const Veiculos: React.FC = () => {
                   </div>
                 </div>
               ) : (
-                <ReactTabulator
-                  ref={tableRef}
-                  data={veiculos}
-                  columns={columns}
-                  layout="fitDataStretch"
-                  pagination="local"
-                  paginationSize={15}
-                  paginationSizeSelector={[10, 15, 25, 50, 100]}
-                  movableColumns={true}
-                  resizableRows={false}
-                  responsiveLayout="hide"
-                  placeholder="Nenhum veículo encontrado"
-                  options={{
-                    height: '600px',
-                    autoResize: true,
-                    dataLoaded: () => {
-                      // Redimensiona após dados carregados
-                      setTimeout(() => debouncedResize(), 100)
-                    }
-                  }}
-                />
+                  <ReactTabulator
+                    ref={tableRef}
+                    data={veiculos}
+                    columns={columns}
+                    layout="fitDataStretch"
+                    pagination="local"
+                    paginationSize={15}
+                    paginationSizeSelector={[10, 15, 25, 50, 100]}
+                    movableColumns={true}
+                    resizableColumns={true}
+                    headerSort={true}
+                    headerSortTristate={true}
+                    responsiveLayout="hide"
+                    placeholder="Nenhum veículo encontrado"
+                    options={{
+                      height: '600px',
+                      autoResize: true,
+                      dataLoaded: () => {
+                        // Redimensiona após dados carregados
+                        setTimeout(() => debouncedResize(), 100)
+                      }
+                    }}
+                  />
               )}
             </Card.Body>
           </Card>

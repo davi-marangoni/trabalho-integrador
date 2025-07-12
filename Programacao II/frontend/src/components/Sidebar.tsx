@@ -9,7 +9,8 @@ import {
   faTruck,
   faSignOutAlt,
   faBars,
-  faChevronLeft
+  faChevronLeft,
+  faChevronRight
 } from '@fortawesome/free-solid-svg-icons'
 
 const Sidebar: React.FC = () => {
@@ -39,7 +40,7 @@ const Sidebar: React.FC = () => {
         {/* Botão toggle - agora no topo da área de navegação */}
         <div className={`d-flex mb-3 ${isCollapsed ? 'justify-content-center' : 'justify-content-end'}`}>
           <div className="toggle-btn" onClick={toggleSidebar} style={{ cursor: 'pointer' }}>
-            <FontAwesomeIcon icon={isCollapsed ? faBars : faChevronLeft} size="lg" />
+            <FontAwesomeIcon icon={isCollapsed ? faChevronRight : faChevronLeft} size="lg" />
           </div>
         </div>
 

@@ -77,3 +77,9 @@ export interface DadosDashboard {
   distribuicaoFinanceira: DadosFinanceiros[]
   movimentacaoDiaria: DadosMovimentacaoDiaria[]
 }
+
+export interface TipoVeiculo {
+  id: number
+  nome: string
+  temAtributosEspecificos: boolean
+}

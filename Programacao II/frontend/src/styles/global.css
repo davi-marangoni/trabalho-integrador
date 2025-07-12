@@ -57,20 +57,32 @@ body {
 }
 
 .sidebar.collapsed .toggle-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  margin: 0 auto;
+  position: absolute;
+  top: 15px;
+  right: -15px;
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 50%;
+  width: 35px;
+  height: 30px;
+  display: flex;
+  align-items: left;
+  justify-content: left;
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  transition: all 0.2s ease;
+  z-index: 1001;
 }
 
 .sidebar .toggle-btn:hover {
   background: #f8f9fa;
-  color: #212529;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
 .sidebar.collapsed .nav-link {
-  justify-content: center;
+  justify-content: left;
   padding: 0.75rem 0.25rem;
   margin-bottom: 0.5rem;
   border-radius: 8px;
