@@ -33,6 +33,7 @@ export class VeiculoService {
                     renavam: v.veic_renavam,
                     situacao: v.veic_situacao,
                     tipo: v.veic_tipo,
+                    descricaoTipo: this.getTiposVeiculo().find(t => t.id === v.veic_tipo)?.nome || 'Desconhecido',
                     ano: v.veic_ano,
                     emailUsuarioAdicionou: v.veic_usua_email
                 };
