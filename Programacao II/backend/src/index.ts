@@ -4,6 +4,7 @@ import passport = require('./config/passport.config');
 import usuarioRouter from './routes/usuario.router';
 import veiculoRouter from './routes/veiculo.router';
 import lancamentoRouter from './routes/lancamento.router';
+import frotaRouter from './routes/frota.router';
 
 // Carrega as variáveis de ambiente
 dotenv.config();
@@ -41,6 +42,7 @@ app.use((req, res, next) => {
 app.use('/api/usuarios', usuarioRouter);
 app.use('/api/veiculos', veiculoRouter);
 app.use('/api/lancamentos', lancamentoRouter);
+app.use('/api/frotas', frotaRouter);
 
 // Rota de health check
 app.get('/health', (req, res) => {
@@ -77,6 +79,7 @@ app.listen(PORT, () => {
     console.log(`👤 Rotas de usuário em http://localhost:${PORT}/api/usuarios`);
     console.log(`🚛 Rotas de veículo em http://localhost:${PORT}/api/veiculos`);
     console.log(`📑 Rotas de lançamentos em http://localhost:${PORT}/api/lancamentos`);
+    console.log(`🚚 Rotas de frotas em http://localhost:${PORT}/api/frotas`);
 });
 
 export default app;
