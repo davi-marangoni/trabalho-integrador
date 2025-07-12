@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Container, Row, Col, Card, Button } from 'react-bootstrap'
 import { ReactTabulator, ColumnDefinition } from 'react-tabulator'
 import 'react-tabulator/css/tabulator_bootstrap5.min.css'
@@ -23,6 +24,7 @@ interface Veiculo {
 }
 
 const Veiculos: React.FC = () => {
+  const navigate = useNavigate()
   const [veiculos, setVeiculos] = useState<Veiculo[]>([])
   const [tiposVeiculo, setTiposVeiculo] = useState<TipoVeiculo[]>([])
   const [loading, setLoading] = useState(true)
@@ -51,7 +53,7 @@ const Veiculos: React.FC = () => {
   const fetchTiposVeiculos = async () => {
     try {
       const result = await servicoApi.get<{ success: boolean; data: TipoVeiculo[]; message: string }>('/veiculos/tipos')
-      
+
       if (result.success) {
         setTiposVeiculo(result.data)
       } else {
@@ -176,7 +178,11 @@ const Veiculos: React.FC = () => {
   }
 
   const handleEditVeiculo = (veiculo: Veiculo) => {
-    console.log('Editando veículo:', veiculo)
+    navigate(`/veiculos/editar/${veiculo.placa}`)
+  }
+
+  const handleAddVeiculo = () => {
+    navigate('/veiculos/cadastrar')
   }
 
   useEffect(() => {
@@ -209,7 +215,9 @@ const Veiculos: React.FC = () => {
           <Col>
             <div className="d-flex justify-content-between align-items-center">
               <h1>Veículos</h1>
-              <Button variant="primary">Adicionar Veículo</Button>
+              <Button variant="primary" onClick={handleAddVeiculo}>
+                Adicionar Veículo
+              </Button>
             </div>
           </Col>
         </Row>

@@ -83,3 +83,25 @@ export interface TipoVeiculo {
   nome: string
   temAtributosEspecificos: boolean
 }
+
+export interface VeiculoBase {
+  placa: string
+  modelo: string
+  renavam: string
+  situacao: string
+  tipo: number
+  ano: number
+  emailUsuarioAdicionou: string
+}
+
+export interface VeiculoCavalo extends VeiculoBase {
+  trucado: boolean
+  idFrota?: number | null
+}
+
+export interface CarretaFrigorificada extends VeiculoBase {
+  marcaEquipamentoFrio: string
+  anoEquipamentoFrio: number
+  quantidadePaletes: number
+  idFrota?: number | null
+}
