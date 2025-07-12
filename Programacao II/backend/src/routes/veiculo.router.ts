@@ -14,6 +14,11 @@ router.get('/tipos', async (req: Request, res: Response) => {
     await veiculoController.getTiposVeiculo(req, res);
 });
 
+// Rota para buscar quantidade de veículos por situação (todos os usuários autenticados)
+router.get('/situacaocount', async (req: Request, res: Response) => {
+    await veiculoController.getVeiculosBySituacaoCount(req, res);
+});
+
 // Rotas para usuários autenticados (tipo 1 e 2)
 router.get('/', async (req: Request, res: Response) => {
     await veiculoController.getVeiculos(req, res);

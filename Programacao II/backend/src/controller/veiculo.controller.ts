@@ -10,7 +10,12 @@ export class VeiculoController {
 
     public async getVeiculos(req: Request, res: Response): Promise<void> {
         try {
-            const veiculos = await this.veiculoService.getVeiculos();
+            const { tipo, situacao } = req.query;
+
+            const veiculos = await this.veiculoService.getVeiculos({
+                tipo: tipo ? Number(tipo) : undefined,
+                situacao: situacao ? String(situacao) : undefined
+            });
 
             res.status(200).json({
                 success: true,
@@ -196,6 +201,34 @@ export class VeiculoController {
             res.status(500).json({
                 success: false,
                 message: 'Erro ao buscar tipos de veículo',
+                error: error instanceof Error ? error.message : 'Erro desconhecido'
+            });
+        }
+    }
+
+    public async getVeiculosBySituacaoCount(req: Request, res: Response): Promise<void> {
+        try {
+            const { situacao } = req.query;
+
+            if (!situacao || !['A', 'I'].includes(String(situacao))) {
+                res.status(400).json({
+                    success: false,
+                    message: 'Situação deve ser A (Ativo) ou I (Inativo)'
+                });
+                return;
+            }
+
+            const count = await this.veiculoService.getVeiculosBySituacaoCount(String(situacao));
+
+            res.status(200).json({
+                success: true,
+                data: { count },
+                message: `Quantidade de veículos com situação ${situacao} encontrada com sucesso`
+            });
+        } catch (error) {
+            res.status(500).json({
+                success: false,
+                message: 'Erro ao buscar quantidade de veículos por situação',
                 error: error instanceof Error ? error.message : 'Erro desconhecido'
             });
         }

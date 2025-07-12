@@ -3,9 +3,9 @@ import db from '../db/database';
 
 export class VeiculoService {
 
-    public async getVeiculos(): Promise<(Veiculo | CarretaFrigorificada | VeiculoCavalo)[]> {
+    public async getVeiculos(filtros?: { tipo?: number; situacao?: string }): Promise<(Veiculo | CarretaFrigorificada | VeiculoCavalo)[]> {
         try {
-            const veiculos = await db.any(`
+            let query = `
                 SELECT
                     v.veic_placa,
                     v.veic_modelo,
@@ -23,8 +23,26 @@ export class VeiculoService {
                 FROM veic_veiculo v
                 LEFT JOIN carf_carreta_frigorifica cf ON v.veic_placa = cf.carf_veic_placa
                 LEFT JOIN cava_cavalo cv ON v.veic_placa = cv.cava_veic_placa
-                ORDER BY v.veic_placa
-            `);
+                WHERE 1 = 1`;
+
+            const params: any[] = [];
+            let paramIndex = 1;
+
+            if (filtros?.tipo) {
+                query += ` AND v.veic_tipo = $${paramIndex}`;
+                params.push(filtros.tipo);
+                paramIndex++;
+            }
+
+            if (filtros?.situacao) {
+                query += ` AND v.veic_situacao = $${paramIndex}`;
+                params.push(filtros.situacao);
+                paramIndex++;
+            }
+
+            query += ` ORDER BY v.veic_placa`;
+
+            const veiculos = await db.any(query, params);
 
             return veiculos.map(v => {
                 const veiculoBase = {
@@ -324,5 +342,23 @@ export class VeiculoService {
             { id: 5, nome: 'Cavalinho', temAtributosEspecificos: true },
             { id: 6, nome: 'Carreta Frigorificada', temAtributosEspecificos: true }
         ];
+    }
+
+    public getVeiculosBySituacaoCount(situacao?: string): Promise<number> {
+        let query = `
+                SELECT COUNT(veic_placa) FROM veic_veiculo
+                WHERE 1 = 1
+            `;
+
+            if (situacao) {
+                query += ` AND veic_situacao = $1`;
+            }
+
+        return db.one(query, [situacao])
+            .then(result => parseInt(result.count, 10))
+            .catch(error => {
+                throw new Error(`Erro ao contar veículos por situação: ${error}`);
+            }
+        );
     }
 }

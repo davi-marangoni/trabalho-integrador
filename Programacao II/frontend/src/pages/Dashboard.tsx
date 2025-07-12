@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Container, Row, Col, Card } from 'react-bootstrap'
 import { PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts'
+import servicoApi from '../services/api'
 
 const mockDadosFinanceiros = [
   { nome: 'Entradas', valor: 11200, cor: '#28a745' },
@@ -27,7 +28,29 @@ const Dashboard: React.FC = () => {
   const totalEntradas = 11200
   const totalSaidas = 4000
   const saldoTotal = totalEntradas - totalSaidas
-  const veiculosAtivos = 3
+  const [veiculosAtivos, setVeiculosAtivos] = useState<number>(0)
+  const [carregandoVeiculos, setCarregandoVeiculos] = useState<boolean>(true)
+
+  useEffect(() => {
+    const buscarVeiculosAtivos = async () => {
+      try {
+        setCarregandoVeiculos(true)
+        const resposta = await servicoApi.get<{
+          success: boolean
+          data: { count: number }
+          message: string
+        }>('/veiculos/situacaocount?situacao=A')
+        setVeiculosAtivos(resposta.data.count)
+      } catch (error) {
+        console.error('Erro ao buscar veículos ativos:', error)
+        setVeiculosAtivos(0)
+      } finally {
+        setCarregandoVeiculos(false)
+      }
+    }
+
+    buscarVeiculosAtivos()
+  }, [])
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {
@@ -93,7 +116,7 @@ const Dashboard: React.FC = () => {
                 Veículos Ativos
               </Card.Title>
               <Card.Text className="h4 mb-0" style={{ color: '#333', fontWeight: 'bold' }}>
-                {veiculosAtivos}
+                {carregandoVeiculos ? 'Carregando...' : veiculosAtivos}
               </Card.Text>
             </Card.Body>
           </Card>
