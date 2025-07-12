@@ -1,119 +1,117 @@
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+
 // Configuração base da API
 const URL_BASE_API = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
 
 class ServicoApi {
-  private urlBase: string
-  private timeoutPadrao: number = 10000 // 10 segundos
+  private axiosInstance: AxiosInstance
 
   constructor(urlBase: string = URL_BASE_API) {
-    this.urlBase = urlBase
+    this.axiosInstance = axios.create({
+      baseURL: urlBase,
+      timeout: 10000, // 10 segundos
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    // Interceptor para adicionar token de autenticação
+    this.axiosInstance.interceptors.request.use(
+      (config) => {
+        const token = localStorage.getItem('tokenAuth')
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`
+        }
+
+        // Log da requisição (apenas em desenvolvimento)
+        if (import.meta.env.DEV) {
+          console.log(`🔄 ${config.method?.toUpperCase()} ${config.baseURL}${config.url}`, config.data || '')
+        }
+
+        return config
+      },
+      (error) => {
+        return Promise.reject(error)
+      }
+    )
+
+    // Interceptor para tratamento de respostas
+    this.axiosInstance.interceptors.response.use(
+      (response: AxiosResponse) => {
+        // Log da resposta (apenas em desenvolvimento)
+        if (import.meta.env.DEV) {
+          console.log(`📡 ${response.config.method?.toUpperCase()} ${response.config.baseURL}${response.config.url} - Status: ${response.status}`)
+          console.log(`📦 Dados recebidos:`, response.data)
+        }
+
+        // Verifica se a API retornou success: false
+        if (response.data?.hasOwnProperty('success') && !response.data.success) {
+          throw new Error(response.data.message || 'Erro na operação')
+        }
+
+        return response
+      },
+      (error) => {
+        // Log do erro (apenas em desenvolvimento)
+        if (import.meta.env.DEV) {
+          console.error(`❌ Erro na requisição:`, error)
+        }
+
+        if (error.response) {
+          // Erro com resposta do servidor
+          const status = error.response.status
+          const dadosResposta = error.response.data
+
+          if (status >= 500) {
+            // Erro do servidor (500+)
+            throw new Error(dadosResposta?.message || `Erro interno do servidor (${status})`)
+          }
+
+          if (status === 404) {
+            // Not Found
+            throw new Error(dadosResposta?.message || 'Recurso não encontrado')
+          }
+
+          if (status === 401) {
+            // Unauthorized - remove token inválido
+            localStorage.removeItem('tokenAuth')
+            localStorage.removeItem('dadosUsuario')
+            throw new Error(dadosResposta?.message || 'Token inválido ou expirado. Faça login novamente.')
+          }
+
+          if (status === 403) {
+            // Forbidden
+            throw new Error(dadosResposta?.message || 'Acesso negado')
+          }
+
+          // Outros erros HTTP
+          throw new Error(dadosResposta?.message || `Erro HTTP ${status}`)
+        } else if (error.request) {
+          // Erro de rede (sem resposta)
+          if (error.code === 'ECONNABORTED') {
+            throw new Error('Timeout na requisição. Tente novamente.')
+          }
+          throw new Error('Erro de conexão. Contate o Administrador.')
+        } else {
+          // Outros erros
+          throw new Error(error.message || 'Erro desconhecido')
+        }
+      }
+    )
   }
 
   private async requisicao<T>(
     endpoint: string,
-    opcoes: RequestInit = {}
+    config: AxiosRequestConfig = {}
   ): Promise<T> {
-    const url = `${this.urlBase}${endpoint}`
-    const metodo = opcoes.method || 'GET'
-
-    // Log da requisição (apenas em desenvolvimento)
-    if (import.meta.env.DEV) {
-      console.log(`🔄 ${metodo} ${url}`, opcoes.body ? JSON.parse(opcoes.body as string) : '')
-    }
-
-    const configuracao: RequestInit = {
-      headers: {
-        'Content-Type': 'application/json',
-        ...opcoes.headers,
-      },
-      ...opcoes,
-    }
-
-    // Adicionar token de autenticação se existir
-    const token = localStorage.getItem('tokenAuth')
-    if (token) {
-      configuracao.headers = {
-        ...configuracao.headers,
-        Authorization: `Bearer ${token}`,
-      }
-    }
-
-    // Controller para timeout
-    const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), this.timeoutPadrao)
-    configuracao.signal = controller.signal
-
     try {
-      const resposta = await fetch(url, configuracao)
-      clearTimeout(timeoutId)
-
-      // Log da resposta (apenas em desenvolvimento)
-      if (import.meta.env.DEV) {
-        console.log(`📡 ${metodo} ${url} - Status: ${resposta.status}`)
-      }
-
-      // Primeiro, verifica se conseguimos parsear o JSON
-      let dadosResposta: any
-      try {
-        dadosResposta = await resposta.json()
-      } catch (parseError) {
-        // Se não conseguir parsear JSON, cria uma resposta de erro
-        throw new Error(`Erro ao parsear resposta JSON. Status: ${resposta.status}`)
-      }
-
-      // Log dos dados da resposta (apenas em desenvolvimento)
-      if (import.meta.env.DEV) {
-        console.log(`📦 Dados recebidos:`, dadosResposta)
-      }
-
-      // Verifica códigos de status HTTP específicos
-      if (resposta.status >= 500) {
-        // Erro do servidor (500+)
-        throw new Error(dadosResposta.message || `Erro interno do servidor (${resposta.status})`)
-      }
-
-      if (resposta.status === 404) {
-        // Not Found
-        throw new Error(dadosResposta.message || 'Recurso não encontrado')
-      }
-
-      if (resposta.status === 401) {
-        // Unauthorized - remove token inválido
-        localStorage.removeItem('tokenAuth')
-        localStorage.removeItem('dadosUsuario')
-        throw new Error(dadosResposta.message || 'Token inválido ou expirado. Faça login novamente.')
-      }
-
-      if (resposta.status === 403) {
-        // Forbidden
-        throw new Error(dadosResposta.message || 'Acesso negado')
-      }
-
-      // Verifica se a API retornou success: false
-      if (dadosResposta.hasOwnProperty('success') && !dadosResposta.success) {
-        throw new Error(dadosResposta.message || 'Erro na operação')
-      }
-
-      // Se chegou até aqui, a requisição foi bem-sucedida
-      return dadosResposta as T
-
-    } catch (erro) {
-      clearTimeout(timeoutId)
-
-      // Tratamento específico para timeout
-      if (erro instanceof Error && erro.name === 'AbortError') {
-        throw new Error('Timeout na requisição. Tente novamente.')
-      }
-
-      console.error(`❌ Falha na requisição ${metodo} ${url}:`, erro)
-
-      // Se for um erro de rede (sem resposta)
-      if (erro instanceof TypeError && erro.message.includes('fetch')) {
-        throw new Error('Erro de conexão. Contate o Administrador.')
-      }
-
-      // Re-throw o erro para que possa ser tratado pelo componente
-      throw erro
+      const response = await this.axiosInstance.request({
+        url: endpoint,
+        ...config,
+      })
+      return response.data as T
+    } catch (error) {
+      throw error
     }
   }
 
@@ -137,7 +135,7 @@ class ServicoApi {
   async post<T>(endpoint: string, dados?: any): Promise<T> {
     return this.requisicao<T>(endpoint, {
       method: 'POST',
-      body: dados ? JSON.stringify(dados) : undefined,
+      data: dados,
     })
   }
 
@@ -150,7 +148,7 @@ class ServicoApi {
   async put<T>(endpoint: string, dados?: any): Promise<T> {
     return this.requisicao<T>(endpoint, {
       method: 'PUT',
-      body: dados ? JSON.stringify(dados) : undefined,
+      data: dados,
     })
   }
 
@@ -165,36 +163,6 @@ class ServicoApi {
     })
   }
 
-  // Métodos utilitários
-
-  /**
-   * Define o timeout para as requisições
-   * @param timeout - Timeout em milissegundos
-   */
-  definirTimeout(timeout: number): void {
-    this.timeoutPadrao = timeout
-  }
-
-  /**
-   * Verifica se há conexão com a API
-   * @returns Promise que resolve com true se conectado
-   */
-  async verificarConexao(): Promise<boolean> {
-    try {
-      await this.get('/health')
-      return true
-    } catch {
-      return false
-    }
-  }
-
-  /**
-   * Obtém a URL base da API
-   * @returns URL base configurada
-   */
-  obterUrlBase(): string {
-    return this.urlBase
-  }
 }
 
 export const servicoApi = new ServicoApi()
