@@ -21,6 +21,7 @@ const Sidebar: React.FC = () => {
   const itensMenu = [
     { caminho: '/', label: 'Dashboard', icone: faChartBar },
     { caminho: '/veiculos', label: 'Veículos', icone: faTruck },
+    { caminho: '/lancamentos', label: 'Lançamentos', icone: faChartBar }
   ]
 
   const lidarComLogout = async () => {

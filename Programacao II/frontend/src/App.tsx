@@ -5,6 +5,7 @@ import Layout from './components/Layout'
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import Veiculos from './pages/Vehicles'
+import Lancamentos from './pages/Entry'
 import PaginaNaoEncontrada from './pages/NotFound'
 
 function App() {
@@ -19,8 +20,9 @@ function App() {
         }>
           <Route index element={<Dashboard />} />
           <Route path="veiculos" element={<Veiculos />} />
+          <Route path="lancamentos" element={<Lancamentos />} />
         </Route>
-        <Route path="*" element={<PaginaNaoEncontrada />} />
+          <Route path="*" element={<PaginaNaoEncontrada />} />
       </Routes>
     </AuthProvider>
   )

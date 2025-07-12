@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import usuarioRouter from './routes/usuario.router';
 import veiculoRouter from './routes/veiculo.router';
+import lancamentoRouter from './routes/lancamento.router';
 import { UsuarioService } from './service/usuario.service';
 
 // Carrega as variáveis de ambiente
@@ -36,6 +37,7 @@ app.use((req, res, next) => {
 // Rotas da API
 app.use('/api/usuarios', usuarioRouter);
 app.use('/api/veiculos', veiculoRouter);
+app.use('/api/lancamentos', lancamentoRouter);
 
 // Rota de health check
 app.get('/health', (req, res) => {
@@ -77,6 +79,7 @@ app.listen(PORT, () => {
     console.log(`🏥 Health check em http://localhost:${PORT}/health`);
     console.log(`👤 Rotas de usuário em http://localhost:${PORT}/api/usuarios`);
     console.log(`🚛 Rotas de veículo em http://localhost:${PORT}/api/veiculos`);
+    console.log(`📑 Rotas de lançamentos em http://localhost:${PORT}/api/lancamentos`);
 });
 
 export default app;
