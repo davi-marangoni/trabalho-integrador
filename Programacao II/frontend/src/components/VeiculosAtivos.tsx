@@ -1,31 +1,46 @@
 import React, { useState, useEffect } from 'react'
 import { Card, Col } from 'react-bootstrap'
-import servicoApi from '../services/api'
+import dashboardService from '../services/dashboard.service'
 
 const VeiculosAtivos: React.FC = () => {
-  const [veiculosAtivos, setVeiculosAtivos] = useState<number>(0)
-  const [carregandoVeiculos, setCarregandoVeiculos] = useState<boolean>(true)
+  const [valor, setValor] = useState<number | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [erro, setErro] = useState<string | null>(null)
 
   useEffect(() => {
-    const buscarVeiculosAtivos = async () => {
+    const buscarDados = async () => {
       try {
-        setCarregandoVeiculos(true)
-        const resposta = await servicoApi.get<{
-          success: boolean
-          data: { count: number }
-          message: string
-        }>('/veiculos/situacaocount?situacao=A')
-        setVeiculosAtivos(resposta.data.count)
+        setLoading(true)
+        setErro(null)
+        const veiculosAtivos = await dashboardService.buscarVeiculosAtivos()
+        setValor(veiculosAtivos)
       } catch (error) {
-        console.error('Erro ao buscar veículos ativos:', error)
-        setVeiculosAtivos(0)
+        const mensagemErro = error instanceof Error ? error.message : 'Erro ao consultar veículos ativos'
+        setErro(mensagemErro)
+        setValor(null)
       } finally {
-        setCarregandoVeiculos(false)
+        setLoading(false)
       }
     }
 
-    buscarVeiculosAtivos()
+    buscarDados()
   }, [])
+
+  const renderConteudo = () => {
+    if (loading) {
+      return <span>Carregando...</span>
+    }
+
+    if (erro) {
+      return <span style={{ fontSize: '0.9rem', color: '#dc3545' }}>{erro}</span>
+    }
+
+    if (valor !== null) {
+      return valor
+    }
+
+    return <span>-</span>
+  }
 
   return (
     <Col md={3}>
@@ -35,7 +50,7 @@ const VeiculosAtivos: React.FC = () => {
             Veículos Ativos
           </Card.Title>
           <Card.Text className="h4 mb-0" style={{ color: '#333', fontWeight: 'bold' }}>
-            {carregandoVeiculos ? 'Carregando...' : veiculosAtivos}
+            {renderConteudo()}
           </Card.Text>
         </Card.Body>
       </Card>

@@ -1,16 +1,38 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Card, Col } from 'react-bootstrap'
+import { SaldoTotalProps } from '../types/saldoTotal'
 
-interface SaldoTotalProps {
-  valor: number
-}
+const SaldoTotal: React.FC<SaldoTotalProps> = ({ totalEntradas, totalSaidas }) => {
+  const [saldo, setSaldo] = useState<number | null>(null)
+  const [erro, setErro] = useState<string | null>(null)
 
-const SaldoTotal: React.FC<SaldoTotalProps> = ({ valor }) => {
+  useEffect(() => {
+    if (totalEntradas !== null && totalSaidas !== null) {
+      setSaldo(totalEntradas - totalSaidas)
+      setErro(null)
+    } else {
+      setSaldo(null)
+      setErro('Erro ao consultar saldo total')
+    }
+  }, [totalEntradas, totalSaidas])
+
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL'
     }).format(value)
+  }
+
+  const renderConteudo = () => {
+    if (erro) {
+      return <span style={{ fontSize: '0.9rem', color: '#dc3545' }}>{erro}</span>
+    }
+
+    if (saldo !== null) {
+      return formatCurrency(saldo)
+    }
+
+    return <span>Carregando...</span>
   }
 
   return (
@@ -21,7 +43,7 @@ const SaldoTotal: React.FC<SaldoTotalProps> = ({ valor }) => {
             Saldo Total
           </Card.Title>
           <Card.Text className="h4 mb-0" style={{ color: '#333', fontWeight: 'bold' }}>
-            {formatCurrency(valor)}
+            {renderConteudo()}
           </Card.Text>
         </Card.Body>
       </Card>

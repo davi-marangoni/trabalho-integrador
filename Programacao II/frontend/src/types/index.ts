@@ -45,6 +45,14 @@ export interface RespostaLogin {
   message: string
 }
 
+// Exportações dos tipos do dashboard
+export * from './dashboard'
+export * from './totalEntradas'
+export * from './totalSaidas'
+export * from './saldoTotal'
+export * from './distribuicaoFinanceira'
+export * from './movimentacaoDiaria'
+
 // Interfaces específicas para usuários
 export interface RespostaUsuarios {
   success: boolean
