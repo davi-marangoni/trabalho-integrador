@@ -8,7 +8,7 @@ const auth = new AuthMiddleware();
 
 router.use(auth.authenticate);
 
-router.get('/', (req, res) => controller.getTransacoes(req, res));
+router.get('/', (req, res) => controller.getLancamentos(req, res));
 router.get('/:id', (req, res) => controller.getLancamentoById(req, res));
 router.post('/', (req, res) => controller.createLancamento(req, res));
 router.put('/:id', (req, res) => controller.updateLancamento(req, res));

@@ -172,9 +172,20 @@ GRANT INSERT, UPDATE, DELETE, SELECT ON TABLE public.lanc_lancamento TO usuario_
 GRANT INSERT, UPDATE, DELETE, SELECT ON TABLE public.tipl_tipo_lancamento TO usuario_api;
 GRANT INSERT, UPDATE, DELETE, SELECT ON TABLE public.usua_usuario TO usuario_api;
 GRANT INSERT, UPDATE, DELETE, SELECT ON TABLE public.veic_veiculo TO usuario_api;
-
+GRANT INSERT, SELECT, UPDATE, DELETE ON TABLE public.abas_abastecimento TO usuario_api;
+GRANT INSERT, SELECT, UPDATE, DELETE ON TABLE public.carf_carreta_frigorifica TO usuario_api;
+GRANT INSERT, SELECT, UPDATE, DELETE ON TABLE public.cava_cavalo TO usuario_api;
+GRANT INSERT, SELECT, UPDATE, DELETE ON TABLE public.ctre_conhecimento_transporte TO usuario_api;
+GRANT INSERT, SELECT, UPDATE, DELETE ON TABLE public.frot_frota TO usuario_api;
+GRANT SELECT, UPDATE, USAGE ON SEQUENCE public.frot_frota_frot_codigo_seq TO usuario_api;
+GRANT INSERT, SELECT, UPDATE, DELETE ON TABLE public.lanc_lancamento TO usuario_api;
+GRANT SELECT, UPDATE, USAGE ON SEQUENCE public.lanc_lancamento_lanc_codigo_seq TO usuario_api;
+GRANT INSERT, SELECT, UPDATE, DELETE ON TABLE public.tipl_tipo_lancamento TO usuario_api;
+GRANT SELECT, UPDATE, USAGE ON SEQUENCE public.tipl_tipo_lancamento_tipl_codigo_seq TO usuario_api;
+GRANT INSERT, SELECT, UPDATE, DELETE ON TABLE public.usua_usuario TO usuario_api;
+GRANT INSERT, SELECT, UPDATE, DELETE ON TABLE public.veic_veiculo TO usuario_api;
 
 
 -- Usuario padrao
 -- email: suporte@integrador.com, senha: 123456
-INSERT INTO public.usua_usuario (usua_email, usua_senha, usua_tipo_usuario) VALUES('suporte@integrador.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 1);
+INSERT INTO public.usua_usuario (usua_email, usua_senha, usua_tipo_usuario) VALUES('suporte@integrador.com', '$2b$12$foAQKk3tpFA1E7kMeHhvVuxB0L1buSz5m5HPVp6AbfQpJKQBmDbbe', 1);

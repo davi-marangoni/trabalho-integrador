@@ -4,6 +4,11 @@ import { FrotaService } from '../service/frota.service';
 export class FrotaController {
     private frotaService = new FrotaService();
 
+     constructor() {
+                this.frotaService = new FrotaService();
+
+            }
+
     /**
      * Busca todas as frotas do sistema
      * Usuários tipo 1 e 2 podem acessar

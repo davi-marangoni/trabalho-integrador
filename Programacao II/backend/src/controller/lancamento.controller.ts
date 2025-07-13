@@ -4,7 +4,12 @@ import { LancamentoService } from '../service/lancamento.service';
 export class LancamentoController {
     private lancamentoService = new LancamentoService();
 
-    public async getTransacoes(req: Request, res: Response) {
+     constructor() {
+                this.lancamentoService = new LancamentoService();
+
+            }
+
+    public async getLancamentos(req: Request, res: Response) {
         const transacoes = await this.lancamentoService.getLancamentos();
         res.json({ success: true, data: transacoes });
     }

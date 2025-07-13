@@ -1,20 +1,20 @@
-import { TipoLancamento } from '../interface/tipoLancamento';
+
 import { Lancamento } from '../interface/lancamento';
 import db from '../db/database';
 
 export class LancamentoService {
     public async getLancamentos(): Promise<Lancamento[]> {
-        return db.any('SELECT * FROM transacoes');
+        return db.any('SELECT * FROM lanc_lancamento');
     }
 
     public async getLancamentoById(id: number): Promise<Lancamento | null> {
-        return db.oneOrNone('SELECT * FROM transacoes WHERE id = $1', [id]);
+        return db.oneOrNone('SELECT * FROM lanc_lancamento WHERE id = $1', [id]);
     }
 
    public async createLancamento(data: Lancamento): Promise<{ success: boolean; id?: number; message?: string }> {
     // Busca o tipo de lançamento pelo idTipoLancamento
     const tipoLancamento = await db.oneOrNone(
-        'SELECT * FROM tipo_lancamento WHERE id = $1',
+        'SELECT * FROM lanc_tipl_codigo WHERE id = $1',
         [data.idTipoLancamento]
     );
 
@@ -26,9 +26,9 @@ export class LancamentoService {
     // Exemplo: if (tipoLancamento.tipo === 1) { ... }
 
     const result = await db.one(
-        `INSERT INTO lancamento (valor, data, arquivo, idTipoLancamento, placaVeiculo, emailUsuarioAdicionou)
+        `INSERT INTO lanc_lancamento (lanc_valor, lanc_data, lanc_arquivo, lanc_tipl_codigo, lanc_veic_placa)
          VALUES ($1, $2, $3, $4, $5, $6) RETURNING id`,
-        [data.valor, data.data, data.arquivo, data.idTipoLancamento, data.placaVeiculo, data.emailUsuarioAdicionou]
+        [data.valor, data.data, data.arquivo, data.idTipoLancamento, data.placaVeiculo]
     );
     return { success: true, id: result.id };
 }
@@ -39,7 +39,7 @@ export class LancamentoService {
     }
 
     public async deleteLancamento(id: number): Promise<{ success: boolean }> {
-        await db.none('DELETE FROM transacoes WHERE id = $1', [id]);
+        await db.none('DELETE FROM lanc_lancamento WHERE id = $1', [id]);
         return { success: true };
     }
 }
