@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Container, Row, Col, Card, Button, Alert } from 'react-bootstrap'
+import { Container, Row, Col, Card, Button, Alert, Modal } from 'react-bootstrap'
 import { ReactTabulator, ColumnDefinition } from 'react-tabulator'
 import 'react-tabulator/css/tabulator_bootstrap5.min.css'
 
@@ -13,6 +13,8 @@ const Frotas: React.FC = () => {
   const [frotas, setFrotas] = useState<Frota[]>([])
   const [loading, setLoading] = useState(true)
   const [erro, setErro] = useState<string | null>(null)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [frotaToDelete, setFrotaToDelete] = useState<{ id: number; nome: string } | null>(null)
   const tableRef = useRef<any>(null)
   const resizeTimeoutRef = useRef<number | null>(null)
   const { isCollapsed } = useSidebar()
@@ -34,19 +36,32 @@ const Frotas: React.FC = () => {
     }, 300)
   }, [])
 
-  // Função para excluir frota
-  const handleDeleteFrota = async (id: number) => {
-    if (window.confirm('Tem certeza que deseja excluir esta frota?')) {
-      try {
-        const result = await servicoApi.delete<{ success: boolean; message: string }>(`/frotas/${id}`)
+  // Função para confirmar exclusão
+  const handleDeleteConfirm = (frota: Frota) => {
+    setFrotaToDelete({
+      id: frota.id,
+      nome: `${frota.placacavalo} - ${frota.placacarreta}`
+    })
+    setShowDeleteModal(true)
+  }
 
-        if (result.success) {
-          // Recarrega a lista após exclusão
-          await fetchFrotas()
-        }
-      } catch (error: any) {
-        setErro(error.message || 'Erro ao excluir frota')
+  // Função para excluir frota
+  const handleDeleteFrota = async () => {
+    if (!frotaToDelete) return
+
+    try {
+      const result = await servicoApi.delete<{ success: boolean; message: string }>(`/frotas/${frotaToDelete.id}`)
+
+      if (result.success) {
+        // Recarrega a lista após exclusão
+        await fetchFrotas()
+        setShowDeleteModal(false)
+        setFrotaToDelete(null)
+      } else {
+        setErro(result.message || 'Erro ao excluir frota')
       }
+    } catch (error: any) {
+      setErro(error.message || 'Erro ao excluir frota')
     }
   }
 
@@ -83,7 +98,7 @@ const Frotas: React.FC = () => {
       cellClick: (e: any, cell: any) => {
         if (e.target.closest('.delete-btn')) {
           const frota = cell.getRow().getData()
-          handleDeleteFrota(frota.id)
+          handleDeleteConfirm(frota)
         }
       }
     }
@@ -203,6 +218,26 @@ const Frotas: React.FC = () => {
           </Col>
         </Row>
       </Container>
+
+      {/* Modal de confirmação de exclusão */}
+      <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirmar Exclusão</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Tem certeza que deseja deletar a frota <strong>{frotaToDelete?.nome}</strong>?
+          <br />
+          <span className="text-danger">Esta ação não pode ser desfeita.</span>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+            Cancelar
+          </Button>
+          <Button variant="danger" onClick={handleDeleteFrota}>
+            Deletar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   )
 }

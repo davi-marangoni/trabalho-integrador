@@ -146,3 +146,49 @@ body {
   background-color: #0d6efd;
   color: white;
 }
+
+/* Estilos específicos para tabelas de usuários */
+.tabulator .tabulator-table .tabulator-row .tabulator-cell .btn {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  margin-right: 0.25rem;
+}
+
+.tabulator .tabulator-table .tabulator-row .tabulator-cell .d-flex {
+  gap: 0.5rem;
+}
+
+/* Melhorar aparência dos botões de ação na tabela */
+.tabulator-cell button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.tabulator-cell button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.tabulator-cell .edit-password-btn {
+  color: #0d6efd;
+  border: 1px solid #0d6efd !important;
+}
+
+.tabulator-cell .edit-password-btn:hover {
+  background-color: #0d6efd;
+  color: white;
+}
+
+.tabulator-cell .delete-btn {
+  color: #dc3545;
+  border: 1px solid #dc3545 !important;
+}
+
+.tabulator-cell .delete-btn:hover {
+  background-color: #dc3545;
+  color: white;
+}

@@ -45,6 +45,24 @@ export interface RespostaLogin {
   message: string
 }
 
+// Interfaces específicas para usuários
+export interface RespostaUsuarios {
+  success: boolean
+  data: Usuario[]
+  message: string
+}
+
+export interface RespostaCriarUsuario {
+  success: boolean
+  data: Usuario
+  message: string
+}
+
+export interface RespostaOperacao {
+  success: boolean
+  message: string
+}
+
 // Tipo genérico para todas as respostas da API
 export interface RespostaApi<T = any> {
   success: boolean

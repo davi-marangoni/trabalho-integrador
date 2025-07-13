@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap'
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { servicoApi } from '../services/api'
 import { VeiculoParaSelecao, NovaFrota } from '../types'
 
@@ -112,8 +113,13 @@ const FrotaForm: React.FC = () => {
           <Col>
             <div className="d-flex justify-content-between align-items-center">
               <h1>Cadastrar Nova Frota</h1>
-              <Button variant="secondary" onClick={handleCancel}>
-                Voltar à Lista
+              <Button
+                variant="outline-secondary"
+                onClick={handleCancel}
+                className="d-flex align-items-center gap-2"
+              >
+              <FontAwesomeIcon icon={faArrowLeft} />
+                Voltar
               </Button>
             </div>
           </Col>
@@ -140,7 +146,7 @@ const FrotaForm: React.FC = () => {
         )}
 
         <Row>
-          <Col md={8} lg={6}>
+          <Col xs={12} md={8} lg={6} xl={12}>
             <Card>
               <Card.Header>
                 <Card.Title>Dados da Frota</Card.Title>
@@ -228,7 +234,7 @@ const FrotaForm: React.FC = () => {
                     </Button>
                     <Button
                       type="button"
-                      variant="secondary"
+                      variant="outline-secondary"
                       onClick={handleCancel}
                       disabled={loading}
                     >

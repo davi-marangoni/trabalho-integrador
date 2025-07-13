@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { servicoApi } from '../services/api'
 import { TipoVeiculo } from '../types'
 
@@ -201,7 +203,12 @@ const VehicleForm: React.FC = () => {
         <Col>
           <div className="d-flex justify-content-between align-items-center">
             <h1>{isEditing ? 'Editar Veículo' : 'Cadastrar Veículo'}</h1>
-            <Button variant="secondary" onClick={() => navigate('/veiculos')}>
+            <Button
+              variant="outline-secondary"
+              onClick={() => navigate('/veiculos')}
+              className="d-flex align-items-center gap-2"
+            >
+              <FontAwesomeIcon icon={faArrowLeft} />
               Voltar
             </Button>
           </div>
@@ -379,20 +386,21 @@ const VehicleForm: React.FC = () => {
                   </div>
                 )}
 
-                <div className="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                  <Button
-                    variant="secondary"
-                    onClick={() => navigate('/veiculos')}
-                    disabled={loading}
-                  >
-                    Cancelar
-                  </Button>
+                <div className="d-flex gap-2 mt-4">
                   <Button
                     variant="primary"
                     type="submit"
                     disabled={loading}
                   >
                     {loading ? 'Salvando...' : isEditing ? 'Atualizar' : 'Cadastrar'}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline-secondary"
+                    onClick={() => navigate('/veiculos')}
+                    disabled={loading}
+                  >
+                    Cancelar
                   </Button>
                 </div>
               </Form>

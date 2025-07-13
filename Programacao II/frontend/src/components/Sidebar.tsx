@@ -11,7 +11,8 @@ import {
   faBars,
   faChevronLeft,
   faChevronRight,
-  faLink
+  faLink,
+  faUsers
 } from '@fortawesome/free-solid-svg-icons'
 
 const Sidebar: React.FC = () => {
@@ -26,6 +27,11 @@ const Sidebar: React.FC = () => {
     { caminho: '/frotas', label: 'Frotas', icone: faLink },
     { caminho: '/lancamentos', label: 'Lançamentos', icone: faChartBar }
   ]
+
+  // Adiciona item de Usuários apenas para administradores (tipo 1)
+  const itensMenuCompleto = usuario?.tipo === 1
+    ? [...itensMenu, { caminho: '/usuarios', label: 'Usuários', icone: faUsers }]
+    : itensMenu
 
   const lidarComLogout = async () => {
     await logout()
@@ -48,7 +54,7 @@ const Sidebar: React.FC = () => {
 
         {/* Área dos itens de menu */}
         <div className="flex-grow-1">
-          {itensMenu.map((item) => (
+          {itensMenuCompleto.map((item) => (
             <Nav.Link
               key={item.caminho}
               onClick={() => navigate(item.caminho)}
