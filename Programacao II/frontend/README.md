@@ -10,6 +10,8 @@
 - **React Tabulator** – Tabelas dinâmicas e interativas.
 - **Recharts** – Gráficos e visualização de dados.
 - **FontAwesome** – Ícones.
+- **Axios** – Biblioteca para realizar requisições HTTP de forma simples, com suporte a interceptores e tratamento de erros.
+- **Moment** – Biblioteca para manipulação e formatação de datas e horários de forma prática.
 
 ## Estrutura do Projeto
 

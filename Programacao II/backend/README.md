@@ -7,6 +7,10 @@
 - **TypeScript** – Tipagem estática para maior segurança e organização do código.
 - **pg-promise** – Integração com banco de dados PostgreSQL.
 - **dotenv** – Gerenciamento de variáveis de ambiente.
+- **bcryptjs** – Biblioteca para hashing de senhas.
+- **jsonwebtoken** – Geração e verificação de tokens JWT para autenticação.
+- **passport** – Middleware para autenticação.
+- **passport-jwt** – Estratégia de autenticação JWT para o Passport.
 
 ## Estrutura do Projeto
 
