@@ -59,6 +59,12 @@ const VehicleForm: React.FC = () => {
 
       if (result.success) {
         const vehicleData = result.data
+
+        let trucado = false
+        if (vehicleData.trucado === 'S') {
+          trucado = true
+        }
+
         setFormData({
           placa: vehicleData.placa,
           modelo: vehicleData.modelo,
@@ -66,7 +72,7 @@ const VehicleForm: React.FC = () => {
           situacao: vehicleData.situacao,
           tipo: vehicleData.tipo,
           ano: vehicleData.ano,
-          trucado: vehicleData.trucado,
+          trucado: trucado,
           marcaEquipamentoFrio: vehicleData.marcaEquipamentoFrio,
           anoEquipamentoFrio: vehicleData.anoEquipamentoFrio,
           quantidadePaletes: vehicleData.quantidadePaletes,
@@ -129,7 +135,7 @@ const VehicleForm: React.FC = () => {
 
       // Adicionar campos específicos baseado no tipo
       if (formData.tipo === 5) { // Cavalinho
-        dataToSend.trucado = formData.trucado || false
+        dataToSend.trucado = formData.trucado ? 'S' : 'N'
       } else if (formData.tipo === 6) { // Carreta Frigorificada
         dataToSend.marcaEquipamentoFrio = formData.marcaEquipamentoFrio || ''
         dataToSend.anoEquipamentoFrio = formData.anoEquipamentoFrio || new Date().getFullYear()
@@ -152,7 +158,8 @@ const VehicleForm: React.FC = () => {
 
         // Comparar campos específicos
         if (formData.tipo === 5) {
-          if (dataToSend.trucado !== originalData.trucado) changedData.trucado = dataToSend.trucado
+          const originalTrucadoValue = originalData.trucado === 'S' ? 'S' : 'N'
+          if (dataToSend.trucado !== originalTrucadoValue) changedData.trucado = dataToSend.trucado
         } else if (formData.tipo === 6) {
           if (dataToSend.marcaEquipamentoFrio !== originalData.marcaEquipamentoFrio) {
             changedData.marcaEquipamentoFrio = dataToSend.marcaEquipamentoFrio
