@@ -6,6 +6,7 @@ import veiculoRouter from './routes/veiculo.router';
 import tipolancamentoRouter from './routes/tipolancamento.router';
 import lancamentoRouter from './routes/lancamento.router';
 import frotaRouter from './routes/frota.router';
+import dashboardRouter from './routes/dashboard.router';
 
 // Carrega as variáveis de ambiente
 dotenv.config();
@@ -45,6 +46,7 @@ app.use('/api/veiculos', veiculoRouter);
 app.use('/api/lancamentos', lancamentoRouter);
 app.use('/api/tipolancamentos', tipolancamentoRouter);
 app.use('/api/frotas', frotaRouter);
+app.use('/api/dashboard', dashboardRouter);
 
 // Rota de health check
 app.get('/health', (req, res) => {
@@ -83,6 +85,7 @@ app.listen(PORT, () => {
     console.log(`📑 Rotas de lançamentos em http://localhost:${PORT}/api/lancamentos`);
     console.log(`📑 Rotas de lançamentos em http://localhost:${PORT}/api/tipolancamentos`);
     console.log(`🚚 Rotas de frotas em http://localhost:${PORT}/api/frotas`);
+    console.log(`📊 Rotas de dashboard em http://localhost:${PORT}/api/dashboard`);
 });
 
 export default app;
