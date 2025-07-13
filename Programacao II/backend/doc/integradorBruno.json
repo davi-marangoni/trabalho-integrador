@@ -52,7 +52,7 @@
             "params": [],
             "body": {
               "mode": "json",
-              "json": "{\n  \"email\": \"davim.chp@gmail.com\",\n  \"senha\": \"chp@0479\"\n}",
+              "json": "{\n  \"email\": \"davim.chp@gmail.com\",\n  \"senha\": \"senha123\"\n}",
               "formUrlEncoded": [],
               "multipartForm": [],
               "file": []
@@ -92,7 +92,7 @@
             "auth": {
               "mode": "bearer",
               "bearer": {
-                "token": "6fc0d255496e430534027ab9f4aa6614234e98201275d20b89c32fb3bcd9789a"
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRhdmltLmNocEBnbWFpbC5jb20iLCJ0aXBvIjoxLCJpYXQiOjE3NTIzNDQwMjcsImV4cCI6MTc1MjM1MTIyN30.ZQepCNGhs8TrtJJ9f3UHTJuPnQLVjxFlmHTPX6n7sQg"
               }
             }
           }
@@ -122,7 +122,7 @@
             "auth": {
               "mode": "bearer",
               "bearer": {
-                "token": "6bc87e7c3759d5b3ab9a0262840f9848e1a38266ba5e3ead22e06670863253d4"
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRhdmltLmNocEBnbWFpbC5jb20iLCJ0aXBvIjoxLCJpYXQiOjE3NTIzNDQwMjcsImV4cCI6MTc1MjM1MTIyN30.ZQepCNGhs8TrtJJ9f3UHTJuPnQLVjxFlmHTPX6n7sQg"
               }
             }
           }
@@ -139,7 +139,7 @@
             "params": [],
             "body": {
               "mode": "json",
-              "json": "{\n  \"email\": \"usuarioteste@in2tegrado4r.com\",\n  \"senha\": \"chp@0479\",\n  \"tipo\": 1\n}",
+              "json": "{\n  \"email\": \"suporte@integrador.com\",\n  \"senha\": \"123456\",\n  \"tipo\": 1\n}",
               "formUrlEncoded": [],
               "multipartForm": [],
               "file": []
@@ -152,7 +152,7 @@
             "auth": {
               "mode": "bearer",
               "bearer": {
-                "token": "cc8b5564beb72322c8d1b6ee2bb01cdcc504122bf117a55bd2a9cd2a6401c79b"
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRhdmltLmNocEBnbWFpbC5jb20iLCJ0aXBvIjoxLCJpYXQiOjE3NTIzNDQwMjcsImV4cCI6MTc1MjM1MTIyN30.ZQepCNGhs8TrtJJ9f3UHTJuPnQLVjxFlmHTPX6n7sQg"
               }
             }
           }
@@ -181,7 +181,7 @@
             "auth": {
               "mode": "bearer",
               "bearer": {
-                "token": "6bc87e7c3759d5b3ab9a0262840f9848e1a38266ba5e3ead22e06670863253d4"
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRhdmltLmNocEBnbWFpbC5jb20iLCJ0aXBvIjoxLCJpYXQiOjE3NTIzNDQwMjcsImV4cCI6MTc1MjM1MTIyN30.ZQepCNGhs8TrtJJ9f3UHTJuPnQLVjxFlmHTPX6n7sQg"
               }
             }
           }
@@ -210,7 +210,7 @@
             "auth": {
               "mode": "bearer",
               "bearer": {
-                "token": "6bc87e7c3759d5b3ab9a0262840f9848e1a38266ba5e3ead22e06670863253d4"
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRhdmltLmNocEBnbWFpbC5jb20iLCJ0aXBvIjoxLCJpYXQiOjE3NTIzNDQwMjcsImV4cCI6MTc1MjM1MTIyN30.ZQepCNGhs8TrtJJ9f3UHTJuPnQLVjxFlmHTPX6n7sQg"
               }
             }
           }
@@ -239,7 +239,7 @@
             "auth": {
               "mode": "bearer",
               "bearer": {
-                "token": "6bc87e7c3759d5b3ab9a0262840f9848e1a38266ba5e3ead22e06670863253d4"
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRhdmltLmNocEBnbWFpbC5jb20iLCJ0aXBvIjoxLCJpYXQiOjE3NTIzNDQwMjcsImV4cCI6MTc1MjM1MTIyN30.ZQepCNGhs8TrtJJ9f3UHTJuPnQLVjxFlmHTPX6n7sQg"
               }
             }
           }
@@ -270,7 +270,7 @@
             "params": [],
             "body": {
               "mode": "json",
-              "json": "{\n  \"placa\": \"MVD8927\",\n  \"modelo\": \"Volvo\",\n  \"renavam\": \"92987050500\",\n  \"situacao\": \"A\",\n  \"tipo\": 6,\n  \"ano\": 2023,\n  \"marcaEquipamentoFrio\": \"Equipamento de Frio\",\n  \"anoEquipamentoFrio\": 2023,\n  \"quantidadePaletes\": 26,\n  \"idFrota\": null\n}",
+              "json": "{\n  \"placa\": \"\",\n  \"modelo\": \"Volvo\",\n  \"renavam\": \"92987050500\",\n  \"situacao\": \"A\",\n  \"tipo\": 1,\n  \"ano\": 2023\n}",
               "formUrlEncoded": [],
               "multipartForm": [],
               "file": []
@@ -283,7 +283,7 @@
             "auth": {
               "mode": "bearer",
               "bearer": {
-                "token": "a3ea8ae56a21634ad0d03049efdbc74e9249c8db7830a678bfdd0d31483bd0d0"
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRhdmltLmNocEBnbWFpbC5jb20iLCJ0aXBvIjoxLCJpYXQiOjE3NTIzNTE2MzYsImV4cCI6MTc1MjM1ODgzNn0.sgw0Rj9oUTKiI6rMOtv0D1PPbhrJK2YDcrNjiX50-XU"
               }
             }
           }
@@ -313,7 +313,7 @@
             "auth": {
               "mode": "bearer",
               "bearer": {
-                "token": "cabf87fa43a649eacb09647110f9672719eebf3aa0b4efdac52f563e7b9c1cc7"
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRhdmltLmNocEBnbWFpbC5jb20iLCJ0aXBvIjoxLCJpYXQiOjE3NTIzNDQwMjcsImV4cCI6MTc1MjM1MTIyN30.ZQepCNGhs8TrtJJ9f3UHTJuPnQLVjxFlmHTPX6n7sQg"
               }
             }
           }
@@ -342,7 +342,7 @@
             "auth": {
               "mode": "bearer",
               "bearer": {
-                "token": "a3ea8ae56a21634ad0d03049efdbc74e9249c8db7830a678bfdd0d31483bd0d0"
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRhdmltLmNocEBnbWFpbC5jb20iLCJ0aXBvIjoxLCJpYXQiOjE3NTIzNDQwMjcsImV4cCI6MTc1MjM1MTIyN30.ZQepCNGhs8TrtJJ9f3UHTJuPnQLVjxFlmHTPX6n7sQg"
               }
             }
           }
@@ -353,7 +353,7 @@
           "filename": "listaVeiculo.bru",
           "seq": 3,
           "request": {
-            "url": "http://localhost:3000/api/veiculos/ABC1234",
+            "url": "http://localhost:3000/api/veiculos/MTN3364",
             "method": "GET",
             "headers": [],
             "params": [],
@@ -371,7 +371,7 @@
             "auth": {
               "mode": "bearer",
               "bearer": {
-                "token": "a3ea8ae56a21634ad0d03049efdbc74e9249c8db7830a678bfdd0d31483bd0d0"
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRhdmltLmNocEBnbWFpbC5jb20iLCJ0aXBvIjoxLCJpYXQiOjE3NTIzNTE2MzYsImV4cCI6MTc1MjM1ODgzNn0.sgw0Rj9oUTKiI6rMOtv0D1PPbhrJK2YDcrNjiX50-XU"
               }
             }
           }
@@ -382,10 +382,23 @@
           "filename": "listaVeiculos.bru",
           "seq": 2,
           "request": {
-            "url": "http://localhost:3000/api/veiculos",
+            "url": "http://localhost:3000/api/veiculos?tipo=6&situacao=A",
             "method": "GET",
             "headers": [],
-            "params": [],
+            "params": [
+              {
+                "name": "tipo",
+                "value": "6",
+                "type": "query",
+                "enabled": true
+              },
+              {
+                "name": "situacao",
+                "value": "A",
+                "type": "query",
+                "enabled": true
+              }
+            ],
             "body": {
               "mode": "none",
               "formUrlEncoded": [],
@@ -400,7 +413,177 @@
             "auth": {
               "mode": "bearer",
               "bearer": {
-                "token": "a3ea8ae56a21634ad0d03049efdbc74e9249c8db7830a678bfdd0d31483bd0d0"
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRhdmltLmNocEBnbWFpbC5jb20iLCJ0aXBvIjoxLCJpYXQiOjE3NTIzNjg5NTksImV4cCI6MTc1MjM3NjE1OX0.cibozQ4jwabZ38o8PWkkdM0uDYEPqsFTlEg0awrbLHg"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "veiculosSituacaoCount",
+          "filename": "veiculosSituacaoCount.bru",
+          "seq": 6,
+          "request": {
+            "url": "http://localhost:3000/api/veiculos/situacaocount?situacao=A",
+            "method": "GET",
+            "headers": [],
+            "params": [
+              {
+                "name": "situacao",
+                "value": "A",
+                "type": "query",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRhdmltLmNocEBnbWFpbC5jb20iLCJ0aXBvIjoxLCJpYXQiOjE3NTIzNTkxNTksImV4cCI6MTc1MjM2NjM1OX0.jfOGka21GBGIdwRu5EFZJA6KKgHCfQo6iH4U1duoXwY"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "Frota",
+      "filename": "Frota",
+      "seq": 4,
+      "root": {
+        "meta": {
+          "name": "Frota",
+          "seq": 4
+        }
+      },
+      "items": [
+        {
+          "type": "http",
+          "name": "cadastrarFrota",
+          "filename": "cadastrarFrota.bru",
+          "seq": 1,
+          "request": {
+            "url": "http://localhost:3000/api/frotas",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"placaCarreta\": \"KLG1222\",\n  \"placaCavalo\": \"KLG1333\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRhdmltLmNocEBnbWFpbC5jb20iLCJ0aXBvIjoxLCJpYXQiOjE3NTIzNjg5NTksImV4cCI6MTc1MjM3NjE1OX0.cibozQ4jwabZ38o8PWkkdM0uDYEPqsFTlEg0awrbLHg"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "listaFrotas",
+          "filename": "listaFrotas.bru",
+          "seq": 2,
+          "request": {
+            "url": "http://localhost:3000/api/frotas",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "json": "{\n  \"placaCarreta\": \"MVD8927\",\n  \"placaCavalo\": \"KCC2699\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRhdmltLmNocEBnbWFpbC5jb20iLCJ0aXBvIjoxLCJpYXQiOjE3NTIzNTE2MzYsImV4cCI6MTc1MjM1ODgzNn0.sgw0Rj9oUTKiI6rMOtv0D1PPbhrJK2YDcrNjiX50-XU"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "listaFrota",
+          "filename": "listaFrota.bru",
+          "seq": 3,
+          "request": {
+            "url": "http://localhost:3000/api/frotas/1",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "json": "{\n  \"placaCarreta\": \"MVD8927\",\n  \"placaCavalo\": \"KCC2699\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRhdmltLmNocEBnbWFpbC5jb20iLCJ0aXBvIjoxLCJpYXQiOjE3NTIzNTE2MzYsImV4cCI6MTc1MjM1ODgzNn0.sgw0Rj9oUTKiI6rMOtv0D1PPbhrJK2YDcrNjiX50-XU"
+              }
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "excluirFrota",
+          "filename": "excluirFrota.bru",
+          "seq": 4,
+          "request": {
+            "url": "http://localhost:3000/api/frotas/1",
+            "method": "DELETE",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "json": "{\n  \"placaCarreta\": \"MVD8927\",\n  \"placaCavalo\": \"KCC2699\"\n}",
+              "formUrlEncoded": [],
+              "multipartForm": [],
+              "file": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "docs": "",
+            "auth": {
+              "mode": "bearer",
+              "bearer": {
+                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRhdmltLmNocEBnbWFpbC5jb20iLCJ0aXBvIjoxLCJpYXQiOjE3NTIzNTE2MzYsImV4cCI6MTc1MjM1ODgzNn0.sgw0Rj9oUTKiI6rMOtv0D1PPbhrJK2YDcrNjiX50-XU"
               }
             }
           }
@@ -417,7 +600,7 @@
       "node_modules",
       ".git"
     ],
-    "size": 0.0034780502319335938,
+    "size": 0.0034694671630859375,
     "filesCount": 15
   }
 }
