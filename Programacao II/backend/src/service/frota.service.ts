@@ -71,7 +71,7 @@ export class FrotaService {
 
             return { success: true, id: novaFrota.id };
         } catch (error) {
-            throw new Error(`Erro ao criar frota: ${error}`);
+            throw new Error(`Erro ao criar frota - ${error}`);
         }
     }
 

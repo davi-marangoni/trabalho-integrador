@@ -10,7 +10,8 @@ import {
   faSignOutAlt,
   faBars,
   faChevronLeft,
-  faChevronRight
+  faChevronRight,
+  faLink
 } from '@fortawesome/free-solid-svg-icons'
 
 const Sidebar: React.FC = () => {
@@ -22,6 +23,7 @@ const Sidebar: React.FC = () => {
   const itensMenu = [
     { caminho: '/', label: 'Dashboard', icone: faChartBar },
     { caminho: '/veiculos', label: 'Veículos', icone: faTruck },
+    { caminho: '/frotas', label: 'Frotas', icone: faLink },
     { caminho: '/lancamentos', label: 'Lançamentos', icone: faChartBar }
   ]
 

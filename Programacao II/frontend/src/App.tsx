@@ -6,6 +6,8 @@ import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import Veiculos from './pages/Vehicles'
 import VehicleForm from './pages/VehicleForm'
+import Frotas from './pages/Frotas'
+import FrotaForm from './pages/FrotaForm'
 import Lancamentos from './pages/Entry'
 import PaginaNaoEncontrada from './pages/NotFound'
 
@@ -23,6 +25,8 @@ function App() {
           <Route path="veiculos" element={<Veiculos />} />
           <Route path="veiculos/cadastrar" element={<VehicleForm />} />
           <Route path="veiculos/editar/:placa" element={<VehicleForm />} />
+          <Route path="frotas" element={<Frotas />} />
+          <Route path="frotas/cadastrar" element={<FrotaForm />} />
           <Route path="lancamentos" element={<Lancamentos />} />
         </Route>
           <Route path="*" element={<PaginaNaoEncontrada />} />

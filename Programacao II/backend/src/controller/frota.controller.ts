@@ -20,8 +20,7 @@ export class FrotaController {
         } catch (error) {
             res.status(500).json({
                 success: false,
-                message: 'Erro ao buscar frotas',
-                error: error instanceof Error ? error.message : 'Erro desconhecido'
+                message: error instanceof Error ? error.message : 'Erro desconhecido'
             });
         }
     }
@@ -60,8 +59,7 @@ export class FrotaController {
         } catch (error) {
             res.status(500).json({
                 success: false,
-                message: 'Erro ao buscar frota',
-                error: error instanceof Error ? error.message : 'Erro desconhecido'
+                message: error instanceof Error ? error.message : 'Erro desconhecido'
             });
         }
     }
@@ -101,8 +99,7 @@ export class FrotaController {
         } catch (error) {
             res.status(400).json({
                 success: false,
-                message: 'Erro ao criar frota',
-                error: error instanceof Error ? error.message : 'Erro desconhecido'
+                message: error instanceof Error ? error.message : 'Erro desconhecido'
             });
         }
     }
@@ -138,8 +135,7 @@ export class FrotaController {
             } else {
                 res.status(500).json({
                     success: false,
-                    message: 'Erro ao deletar frota',
-                    error: error instanceof Error ? error.message : 'Erro desconhecido'
+                    message: error instanceof Error ? error.message : 'Erro desconhecido'
                 });
             }
         }

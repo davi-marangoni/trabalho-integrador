@@ -105,3 +105,31 @@ export interface CarretaFrigorificada extends VeiculoBase {
   quantidadePaletes: number
   idFrota?: number | null
 }
+
+// Interfaces para Frotas
+export interface Frota {
+  id: number
+  placacavalo: string
+  placacarreta: string
+  emailusuarioadicionou: string
+}
+
+export interface NovaFrota {
+  placaCarreta: string
+  placaCavalo: string
+}
+
+export interface VeiculoParaSelecao {
+  placa: string
+  modelo: string
+  renavam: string
+  situacao: string
+  tipo: number
+  descricaoTipo: string
+  ano: number
+  emailUsuarioAdicionou: string
+  marcaEquipamentoFrio?: string
+  anoEquipamentoFrio?: number
+  quantidadePaletes?: number
+  idFrota?: number
+}
