@@ -24,14 +24,20 @@ export class LancamentoController {
             });}}
 
     public async getLancamentoById(req: Request, res: Response) {
-        const id = Number(req.params.id);
-        const lancamento = await this.lancamentoService.getLancamentoById(id);
-        if (lancamento) {
-            res.json({ success: true, data: lancamento });
-        } else {
-            res.status(404).json({ success: false, message: 'Transação não encontrada' });
-        }
-    }
+         try{
+             const id = Number(req.params.id);
+            const transacoes = await this.lancamentoService.getLancamentoById(id);
+
+            res.status(200).json({
+                success: true,
+                data: transacoes,
+                message: 'Lançamentos encontrados com sucesso'
+            });
+    } catch (error) {
+        res.status(500).json({
+                success: false,
+                message: error instanceof Error ? error.message : 'Erro desconhecido'
+            });}}
 
     public async createLancamento(req: Request, res: Response) {
         const result = await this.lancamentoService.createLancamento(req.body);

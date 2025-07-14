@@ -30,14 +30,21 @@ export class TipoLancamentoController {
 
 
     public async getTipoLancamentoById(req: Request, res: Response) {
-        const id = Number(req.params.id);
-        const tipolancamento = await this.tipolancamentoService.getTipoLancamentoById(id);
-        if (tipolancamento) {
-            res.json({ success: true, data: tipolancamento });
-        } else {
-            res.status(404).json({ success: false, message: 'Tipo de lancamento  não encontrado' });
-        }
-    }
+           try{
+             const id = Number(req.params.id);
+            const transacoes = await this.tipolancamentoService.getTipoLancamentoById(id);
+
+            res.status(200).json({
+                success: true,
+                data: transacoes,
+                message: 'Tipo de Lançamentos encontrados com sucesso'
+            });
+    } catch (error) {
+        res.status(500).json({
+                success: false,
+                message: error instanceof Error ? error.message : 'Erro desconhecido'
+            });}}
+
 
     public async createTipoLancamento(req: Request, res: Response) {
         const result = await this.tipolancamentoService.createTipoLancamento(req.body);
