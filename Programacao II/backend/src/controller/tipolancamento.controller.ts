@@ -13,7 +13,21 @@ export class TipoLancamentoController {
     public async getTipoLancamentos(req: Request, res: Response) {
         const transacoes = await this.tipolancamentoService.getTipoLancamentos();
         res.json({ success: true, data: transacoes });
-    }
+           try{
+            const transacoes = await this.tipolancamentoService.getTipoLancamentos();
+
+            res.status(200).json({
+                success: true,
+                data: transacoes,
+                message: 'Tipo de lançamentos encontrados com sucesso'
+            });
+    } catch (error) {
+        res.status(500).json({
+                success: false,
+                message: error instanceof Error ? error.message : 'Erro desconhecido'
+            });}}
+
+
 
     public async getTipoLancamentoById(req: Request, res: Response) {
         const id = Number(req.params.id);

@@ -82,7 +82,6 @@ const columns: ColumnDefinition[] = [
 
   const initializeData = async () => {
     await fetchLancamentos()
-
   }
 
    useEffect(() => {

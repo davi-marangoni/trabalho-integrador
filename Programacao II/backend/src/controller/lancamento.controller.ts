@@ -10,9 +10,18 @@ export class LancamentoController {
             }
 
     public async getLancamentos(req: Request, res: Response) {
-        const transacoes = await this.lancamentoService.getLancamentos();
-        res.json({ success: true, data: transacoes });
-    }
+       try{ const transacoes = await this.lancamentoService.getLancamentos();
+
+            res.status(200).json({
+                success: true,
+                data: transacoes,
+                message: 'Lançamentos encontrados com sucesso'
+            });
+    } catch (error) {
+        res.status(500).json({
+                success: false,
+                message: error instanceof Error ? error.message : 'Erro desconhecido'
+            });}}
 
     public async getLancamentoById(req: Request, res: Response) {
         const id = Number(req.params.id);
