@@ -6,7 +6,7 @@ import 'react-tabulator/css/tabulator_bootstrap5.min.css'
 
 import { servicoApi } from '../services/api'
 import { useSidebar } from '../components/Layout'
-import { TipoVeiculo } from '../types'
+import { TipoVeiculo, RespostaApi } from '../types'
 
 interface Veiculo {
   placa: string
@@ -52,9 +52,9 @@ const Veiculos: React.FC = () => {
   // Função para buscar tipos de veículos da API
   const fetchTiposVeiculos = async () => {
     try {
-      const result = await servicoApi.get<{ success: boolean; data: TipoVeiculo[]; message: string }>('/veiculos/tipos')
+      const result = await servicoApi.get<RespostaApi<TipoVeiculo[]>>('/veiculos/tipos')
 
-      if (result.success) {
+      if (result.success && result.data) {
         setTiposVeiculo(result.data)
       } else {
         console.error('Erro ao buscar tipos de veículos:', result.message)
@@ -157,9 +157,9 @@ const Veiculos: React.FC = () => {
   const fetchVeiculos = async () => {
     try {
       setLoading(true)
-      const result = await servicoApi.get<{ success: boolean; data: Veiculo[]; message: string }>('/veiculos')
+      const result = await servicoApi.get<RespostaApi<Veiculo[]>>('/veiculos')
 
-      if (result.success) {
+      if (result.success && result.data) {
         setVeiculos(result.data)
       } else {
         console.error('Erro ao buscar veículos:', result.message)

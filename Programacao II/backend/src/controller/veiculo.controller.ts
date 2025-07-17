@@ -25,8 +25,7 @@ export class VeiculoController {
         } catch (error) {
             res.status(500).json({
                 success: false,
-                message: 'Erro ao buscar veículos',
-                error: error instanceof Error ? error.message : 'Erro desconhecido'
+                message: `Erro ao buscar veículos: ${error instanceof Error ? error.message : 'Erro desconhecido'}`
             });
         }
     }
@@ -61,8 +60,7 @@ export class VeiculoController {
         } catch (error) {
             res.status(500).json({
                 success: false,
-                message: 'Erro ao buscar veículo',
-                error: error instanceof Error ? error.message : 'Erro desconhecido'
+                message: `Erro ao buscar veículo: ${error instanceof Error ? error.message : 'Erro desconhecido'}`
             });
         }
     }
@@ -132,8 +130,7 @@ export class VeiculoController {
             } else {
                 res.status(500).json({
                     success: false,
-                    message: 'Erro ao criar veículo',
-                    error: error instanceof Error ? error.message : 'Erro desconhecido'
+                    message: `Erro ao criar veículo: ${error instanceof Error ? error.message : 'Erro desconhecido'}`
                 });
             }
         }
@@ -181,8 +178,7 @@ export class VeiculoController {
             } else {
                 res.status(500).json({
                     success: false,
-                    message: 'Erro ao atualizar veículo',
-                    error: error instanceof Error ? error.message : 'Erro desconhecido'
+                    message: `Erro ao atualizar veículo: ${error instanceof Error ? error.message : 'Erro desconhecido'}`
                 });
             }
         }
@@ -200,8 +196,7 @@ export class VeiculoController {
         } catch (error) {
             res.status(500).json({
                 success: false,
-                message: 'Erro ao buscar tipos de veículo',
-                error: error instanceof Error ? error.message : 'Erro desconhecido'
+                message: `Erro ao buscar tipos de veículo: ${error instanceof Error ? error.message : 'Erro desconhecido'}`
             });
         }
     }
@@ -228,8 +223,7 @@ export class VeiculoController {
         } catch (error) {
             res.status(500).json({
                 success: false,
-                message: 'Erro ao buscar quantidade de veículos por situação',
-                error: error instanceof Error ? error.message : 'Erro desconhecido'
+                message: `Erro ao buscar quantidade de veículos por situação: ${error instanceof Error ? error.message : 'Erro desconhecido'}`
             });
         }
     }

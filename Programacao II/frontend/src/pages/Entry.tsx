@@ -7,6 +7,7 @@ import axios from 'axios';
 
 import { useSidebar } from '../components/Layout'
 import { servicoApi } from '../services/api'
+import { RespostaApi } from '../types'
 
 interface Lancamento {
   id: number;
@@ -98,9 +99,9 @@ const columns: ColumnDefinition[] = [
   const fetchLancamentos = async () => {
       try {
         setLoading(true)
-        const result = await servicoApi.get<{ success: boolean; data: Lancamento[]; message: string }>('/lancamentos')
+        const result = await servicoApi.get<RespostaApi<Lancamento[]>>('/lancamentos')
 
-        if (result.success) {
+        if (result.success && result.data) {
           setLancamentos(result.data)
         } else {
           console.error('Erro ao buscar lancamentos:', result.message)

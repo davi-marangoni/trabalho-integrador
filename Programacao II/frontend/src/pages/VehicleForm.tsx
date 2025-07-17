@@ -4,7 +4,7 @@ import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { servicoApi } from '../services/api'
-import { TipoVeiculo } from '../types'
+import { TipoVeiculo, RespostaApi } from '../types'
 
 interface VehicleFormData {
   placa: string
@@ -42,8 +42,8 @@ const VehicleForm: React.FC = () => {
   // Buscar tipos de veículos
   const fetchTiposVeiculos = async () => {
     try {
-      const result = await servicoApi.get<{ success: boolean; data: TipoVeiculo[]; message: string }>('/veiculos/tipos')
-      if (result.success) {
+      const result = await servicoApi.get<RespostaApi<TipoVeiculo[]>>('/veiculos/tipos')
+      if (result.success && result.data) {
         setTiposVeiculo(result.data)
       }
     } catch (error) {
@@ -55,9 +55,9 @@ const VehicleForm: React.FC = () => {
   const fetchVehicleData = async (vehiclePlaca: string) => {
     try {
       setLoading(true)
-      const result = await servicoApi.get<{ success: boolean; data: any; message: string }>(`/veiculos/${vehiclePlaca}`)
+      const result = await servicoApi.get<RespostaApi<any>>(`/veiculos/${vehiclePlaca}`)
 
-      if (result.success) {
+      if (result.success && result.data) {
         const vehicleData = result.data
 
         let trucado = false
@@ -147,7 +147,7 @@ const VehicleForm: React.FC = () => {
         const changedData: any = {}
 
         // Obter dados originais do veículo
-        const originalResponse = await servicoApi.get<{ success: boolean; data: any; message: string }>(`/veiculos/${placa}`)
+        const originalResponse = await servicoApi.get<RespostaApi<any>>(`/veiculos/${placa}`)
         const originalData = originalResponse.data
 
         // Comparar campos básicos

@@ -6,7 +6,7 @@ import 'react-tabulator/css/tabulator_bootstrap5.min.css'
 
 import { servicoApi } from '../services/api'
 import { useSidebar } from '../components/Layout'
-import { Frota } from '../types'
+import { Frota, RespostaApi } from '../types'
 
 const Frotas: React.FC = () => {
   const navigate = useNavigate()
@@ -110,9 +110,9 @@ const Frotas: React.FC = () => {
       setLoading(true)
       setErro(null)
 
-      const result = await servicoApi.get<{ success: boolean; data: Frota[]; message: string }>('/frotas')
+      const result = await servicoApi.get<RespostaApi<Frota[]>>('/frotas')
 
-      if (result.success) {
+      if (result.success && result.data) {
         setFrotas(result.data)
       } else {
         setErro(result.message)

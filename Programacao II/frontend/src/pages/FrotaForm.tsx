@@ -4,7 +4,7 @@ import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { servicoApi } from '../services/api'
-import { VeiculoParaSelecao, NovaFrota } from '../types'
+import { VeiculoParaSelecao, NovaFrota, RespostaApi } from '../types'
 
 const FrotaForm: React.FC = () => {
   const navigate = useNavigate()
@@ -25,9 +25,9 @@ const FrotaForm: React.FC = () => {
   const fetchCavalos = async () => {
     try {
       setLoadingCavalos(true)
-      const result = await servicoApi.get<{ success: boolean; data: VeiculoParaSelecao[]; message: string }>('/veiculos?tipo=5&situacao=A')
+      const result = await servicoApi.get<RespostaApi<VeiculoParaSelecao[]>>('/veiculos?tipo=5&situacao=A')
 
-      if (result.success) {
+      if (result.success && result.data) {
         setCavalos(result.data)
       } else {
         setErro(result.message)
@@ -43,9 +43,9 @@ const FrotaForm: React.FC = () => {
   const fetchCarretas = async () => {
     try {
       setLoadingCarretas(true)
-      const result = await servicoApi.get<{ success: boolean; data: VeiculoParaSelecao[]; message: string }>('/veiculos?tipo=6&situacao=A')
+      const result = await servicoApi.get<RespostaApi<VeiculoParaSelecao[]>>('/veiculos?tipo=6&situacao=A')
 
-      if (result.success) {
+      if (result.success && result.data) {
         setCarretas(result.data)
       } else {
         setErro(result.message)
@@ -80,7 +80,7 @@ const FrotaForm: React.FC = () => {
       setErro(null)
       setSucesso(null)
 
-      const result = await servicoApi.post<{ success: boolean; data: { id: number }; message: string }>('/frotas', formData)
+      const result = await servicoApi.post<RespostaApi<{ id: number }>>('/frotas', formData)
 
       if (result.success) {
         setSucesso(result.message)

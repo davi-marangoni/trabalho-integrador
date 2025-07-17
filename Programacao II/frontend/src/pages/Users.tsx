@@ -8,7 +8,7 @@ import { faPlus, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
 
 import { servicoApi } from '../services/api'
 import { useAuth } from '../contexts/AuthContext'
-import { Usuario, RespostaUsuarios, RespostaOperacao } from '../types'
+import { Usuario, RespostaApi } from '../types'
 
 const Usuarios: React.FC = () => {
   const navigate = useNavigate()
@@ -33,9 +33,9 @@ const Usuarios: React.FC = () => {
       setLoading(true)
       setError(null)
 
-      const result = await servicoApi.get<RespostaUsuarios>('/usuarios')
+      const result = await servicoApi.get<RespostaApi<Usuario[]>>('/usuarios')
 
-      if (result.success) {
+      if (result.success && result.data) {
         setUsuarios(result.data)
       } else {
         setError(result.message || 'Erro ao buscar usuários')
@@ -69,7 +69,7 @@ const Usuarios: React.FC = () => {
     if (!userToDelete) return
 
     try {
-      const result = await servicoApi.delete<RespostaOperacao>(`/usuarios/${encodeURIComponent(userToDelete)}`)
+      const result = await servicoApi.delete<RespostaApi>(`/usuarios/${encodeURIComponent(userToDelete)}`)
 
       if (result.success) {
         await fetchUsuarios() // Recarrega a lista

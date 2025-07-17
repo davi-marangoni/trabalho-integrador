@@ -28,8 +28,7 @@ export class UsuarioController {
         } catch (error) {
             res.status(500).json({
                 success: false,
-                message: 'Erro ao buscar usuários',
-                error: error instanceof Error ? error.message : 'Erro desconhecido'
+                message: `Erro ao buscar usuários: ${error instanceof Error ? error.message : 'Erro desconhecido'}`
             });
         }
     }
@@ -70,8 +69,7 @@ export class UsuarioController {
         } catch (error) {
             res.status(500).json({
                 success: false,
-                message: 'Erro ao buscar usuário',
-                error: error instanceof Error ? error.message : 'Erro desconhecido'
+                message: `Erro ao buscar usuário: ${error instanceof Error ? error.message : 'Erro desconhecido'}`
             });
         }
     }
@@ -137,8 +135,7 @@ export class UsuarioController {
             } else {
                 res.status(500).json({
                     success: false,
-                    message: 'Erro ao criar usuário',
-                    error: error instanceof Error ? error.message : 'Erro desconhecido'
+                    message: `Erro ao criar usuário: ${error instanceof Error ? error.message : 'Erro desconhecido'}`
                 });
             }
         }
@@ -192,8 +189,7 @@ export class UsuarioController {
             } else {
                 res.status(500).json({
                     success: false,
-                    message: 'Erro ao atualizar senha',
-                    error: error instanceof Error ? error.message : 'Erro desconhecido'
+                    message: `Erro ao atualizar senha: ${error instanceof Error ? error.message : 'Erro desconhecido'}`
                 });
             }
         }
@@ -229,8 +225,7 @@ export class UsuarioController {
             } else {
                 res.status(500).json({
                     success: false,
-                    message: 'Erro ao remover usuário',
-                    error: error instanceof Error ? error.message : 'Erro desconhecido'
+                    message: `Erro ao remover usuário: ${error instanceof Error ? error.message : 'Erro desconhecido'}`
                 });
             }
         }
@@ -272,8 +267,7 @@ export class UsuarioController {
         } catch (error) {
             res.status(500).json({
                 success: false,
-                message: 'Erro ao realizar login',
-                error: error instanceof Error ? error.message : 'Erro desconhecido'
+                message: `Erro ao realizar login: ${error instanceof Error ? error.message : 'Erro desconhecido'}`
             });
         }
     }
@@ -293,8 +287,7 @@ export class UsuarioController {
         } catch (error) {
             res.status(500).json({
                 success: false,
-                message: 'Erro ao realizar logout',
-                error: error instanceof Error ? error.message : 'Erro desconhecido'
+                message: `Erro ao realizar logout: ${error instanceof Error ? error.message : 'Erro desconhecido'}`
             });
         }
     }

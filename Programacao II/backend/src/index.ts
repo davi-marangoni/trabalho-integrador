@@ -70,8 +70,7 @@ app.use((error: Error, req: express.Request, res: express.Response, next: expres
     console.error('Erro interno:', error);
     res.status(500).json({
         success: false,
-        message: 'Erro interno do servidor',
-        error: process.env.NODE_ENV === 'development' ? error.message : 'Erro interno'
+        message: `Erro interno do servidor: ${error.message}`
     });
 });
 

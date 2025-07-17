@@ -6,7 +6,7 @@ import { faArrowLeft, faSave } from '@fortawesome/free-solid-svg-icons'
 
 import { servicoApi } from '../services/api'
 import { useAuth } from '../contexts/AuthContext'
-import { RespostaCriarUsuario } from '../types'
+import { RespostaApi, Usuario } from '../types'
 
 interface UsuarioForm {
   email: string
@@ -66,7 +66,7 @@ const UserForm: React.FC = () => {
         return
       }
 
-      const result = await servicoApi.post<RespostaCriarUsuario>('/usuarios/register', formData)
+      const result = await servicoApi.post<RespostaApi<Usuario>>('/usuarios/register', formData)
 
       if (result.success) {
         setSuccess(result.message || 'Usuário criado com sucesso')

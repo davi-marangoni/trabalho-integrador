@@ -6,7 +6,7 @@ import { faArrowLeft, faSave } from '@fortawesome/free-solid-svg-icons'
 
 import { servicoApi } from '../services/api'
 import { useAuth } from '../contexts/AuthContext'
-import { RespostaOperacao } from '../types'
+import { RespostaApi } from '../types'
 
 const PasswordEditForm: React.FC = () => {
   const navigate = useNavigate()
@@ -73,7 +73,7 @@ const PasswordEditForm: React.FC = () => {
         return
       }
 
-      const result = await servicoApi.put<RespostaOperacao>(`/usuarios/${encodeURIComponent(email!)}/senha`, {
+      const result = await servicoApi.put<RespostaApi>(`/usuarios/${encodeURIComponent(email!)}/senha`, {
         novaSenha
       })
 

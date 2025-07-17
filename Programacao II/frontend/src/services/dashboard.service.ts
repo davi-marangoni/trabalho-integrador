@@ -1,12 +1,13 @@
 import moment from 'moment'
 import 'moment/locale/pt-br'
 import servicoApi from './api'
+import { RespostaApi } from '../types/api'
 import {
-  TotalEntradasResponse,
-  TotalSaidasResponse,
-  MovimentacaoDiariaResponse,
+  TotalEntradas,
+  TotalSaidas,
+  MovimentacaoDiaria,
   MovimentacaoDay,
-  VeiculosAtivosResponse
+  VeiculosAtivos
 } from '../types/dashboard'
 
 // Configurar moment.js para usar português brasileiro de forma forçada
@@ -21,7 +22,7 @@ export class DashboardService {
     const ano = moment().year()
 
     try {
-      const response = await servicoApi.get<TotalEntradasResponse>(
+      const response = await servicoApi.get<RespostaApi<TotalEntradas>>(
         `/dashboard/totalentradas?mes=${mes}&ano=${ano}`
       )
 
@@ -44,7 +45,7 @@ export class DashboardService {
     const ano = moment().year()
 
     try {
-      const response = await servicoApi.get<TotalSaidasResponse>(
+      const response = await servicoApi.get<RespostaApi<TotalSaidas>>(
         `/dashboard/totalsaidas?mes=${mes}&ano=${ano}`
       )
 
@@ -67,7 +68,7 @@ export class DashboardService {
     const ano = moment().year()
 
     try {
-      const response = await servicoApi.get<MovimentacaoDiariaResponse>(
+      const response = await servicoApi.get<RespostaApi<MovimentacaoDiaria>>(
         `/dashboard/movimentacaodiaria?mes=${mes}&ano=${ano}`
       )
 
@@ -87,7 +88,7 @@ export class DashboardService {
    */
   async buscarVeiculosAtivos(): Promise<number> {
     try {
-      const response = await servicoApi.get<VeiculosAtivosResponse>(
+      const response = await servicoApi.get<RespostaApi<VeiculosAtivos>>(
         '/veiculos/situacaocount?situacao=A'
       )
 

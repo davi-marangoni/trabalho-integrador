@@ -22,7 +22,7 @@ export class AuthMiddleware {
             if (error) {
                 return res.status(500).json({
                     success: false,
-                    message: 'Erro interno ao validar token',
+                    message: `Erro interno ao validar token: ${error instanceof Error ? error.message : 'Erro desconhecido'}`,
                     error: error.message
                 });
             }
@@ -36,38 +36,11 @@ export class AuthMiddleware {
 
             // Adiciona o usuário ao request
             req.user = user;
-            // Mantém compatibilidade com código existente
             req.emailUsuario = user.email;
             req.tipoUsuario = user.tipo;
 
             next();
         })(req, res, next);
-    };
-
-    /**
-     * Middleware para verificar se o usuário pode acessar apenas seus próprios dados
-     */
-    public authorizeOwner = (req: Request, res: Response, next: NextFunction): void => {
-        try {
-            const { email } = req.params;
-
-            // Verifica se o usuário está tentando acessar seus próprios dados
-            if (req.emailUsuario !== email) {
-                res.status(403).json({
-                    success: false,
-                    message: 'Acesso negado. Você só pode acessar seus próprios dados'
-                });
-                return;
-            }
-
-            next();
-        } catch (error) {
-            res.status(500).json({
-                success: false,
-                message: 'Erro interno ao verificar autorização',
-                error: error instanceof Error ? error.message : 'Erro desconhecido'
-            });
-        }
     };
 
     /**
@@ -88,34 +61,9 @@ export class AuthMiddleware {
         } catch (error) {
             res.status(500).json({
                 success: false,
-                message: 'Erro interno ao verificar autorização de administrador',
-                error: error instanceof Error ? error.message : 'Erro desconhecido'
+                message: `Erro interno ao verificar autorização de administrador: ${error instanceof Error ? error.message : 'Erro desconhecido'}`
             });
         }
     };
 
-    /**
-     * Middleware para autorizar visualização baseada no tipo de usuário
-     * - Tipo 1 (admin): pode ver todos os registros
-     * - Tipo 2 (comum): só pode ver registros que ele cadastrou
-     */
-    public authorizeViewAccess = (req: Request, res: Response, next: NextFunction): void => {
-        try {
-            // Se for administrador (tipo 1), permite acesso total
-            if (req.tipoUsuario === 1) {
-                next();
-                return;
-            }
-
-            // Se for usuário comum (tipo 2), adiciona filtro por email do usuário
-            // O controller deve usar req.emailUsuario para filtrar resultados
-            next();
-        } catch (error) {
-            res.status(500).json({
-                success: false,
-                message: 'Erro interno ao verificar autorização de visualização',
-                error: error instanceof Error ? error.message : 'Erro desconhecido'
-            });
-        }
-    };
 }
