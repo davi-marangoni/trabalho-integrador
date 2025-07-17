@@ -10,6 +10,8 @@ import VehicleForm from './pages/VehicleForm'
 import Frotas from './pages/Frotas'
 import FrotaForm from './pages/FrotaForm'
 import Lancamentos from './pages/Entry'
+import EntryForm from './pages/EntryForm';
+import EntryValuesForm from './pages/EntryValuesForm'
 import Usuarios from './pages/Users'
 import UserForm from './pages/UserForm'
 import PasswordEditForm from './pages/PasswordEditForm'
@@ -33,6 +35,8 @@ function App() {
           <Route path="frotas" element={<Frotas />} />
           <Route path="frotas/cadastrar" element={<FrotaForm />} />
           <Route path="lancamentos" element={<Lancamentos />} />
+          <Route path="tipolancamentos/cadastrar" element={<EntryForm />} />
+          <Route path="lancamentos/novo" element={<EntryValuesForm />} />
           <Route path="relatorios" element={<Reports />} />
           <Route path="usuarios" element={<AdminRoute><Usuarios /></AdminRoute>} />
           <Route path="usuarios/cadastrar" element={<AdminRoute><UserForm /></AdminRoute>} />

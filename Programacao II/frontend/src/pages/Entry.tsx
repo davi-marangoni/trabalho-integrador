@@ -89,12 +89,16 @@ const columns: ColumnDefinition[] = [
       initializeData()
     }, [])
   const handleEditLancamento = (lancamento: TipoLancamento) => {
-    navigate(`/tipolancamento/${lancamento.descricao}`)
+    navigate(`/lancamento/${lancamento.descricao}`)
   }
 
-    const handleAddLancamento = () => {
-    navigate('/tipolancamento')
+  const handleAddLancamento = () => {
+    navigate(`/tipolancamentos/cadastrar`)
   }
+
+  const handleAddNewLancamento = () => {
+  navigate(`/lancamentos/novo`)
+}
 
   const fetchLancamentos = async () => {
       try {
@@ -120,10 +124,16 @@ const columns: ColumnDefinition[] = [
               <Col>
                 <div className="d-flex justify-content-between align-items-center">
                   <h1>Lançamento</h1>
-                  <Button variant="primary" onClick={handleAddLancamento}>
+                  <div className="d-flex gap-2">
+                  <Button variant="primary" onClick={handleAddNewLancamento}>
                     Adicionar Lançamento
                   </Button>
+                  <Button variant="primary" onClick={handleAddLancamento}>
+                    Adicionar Tipo de Lançamento
+                  </Button>
+                  </div>
                 </div>
+
               </Col>
             </Row>
 

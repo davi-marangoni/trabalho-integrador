@@ -7,8 +7,9 @@ import { servicoApi } from '../services/api'
 import { RespostaApi } from '../types'
 
 interface EntryTypeFormData {
-  descricao: string
-  tipo: number // 1 - Entrada, 2 - Saída
+  tipl_codigo?: number;
+  tipl_descricao: string
+  tipl_tipo: number // 1 - Entrada, 2 - Saída
 }
 
 const EntryTypeForm: React.FC = () => {
@@ -18,15 +19,15 @@ const EntryTypeForm: React.FC = () => {
   const [sucesso, setSucesso] = useState<string | null>(null)
 
   const [formData, setFormData] = useState<EntryTypeFormData>({
-    descricao: '',
-    tipo: 1
+    tipl_descricao: '',
+    tipl_tipo: 1
   })
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
   const { name, value } = e.target
   setFormData(prev => ({
     ...prev,
-    [name]: name === 'tipo' ? parseInt(value) : value
+    [name]: name === 'tipl_tipo' ? parseInt(value) : value
   }))
 }
 
@@ -42,7 +43,7 @@ const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!formData.descricao || !formData.tipo) {
+    if (!formData.tipl_descricao || !formData.tipl_tipo) {
       setErro('Por favor, preencha todos os campos')
       return
     }
@@ -52,24 +53,32 @@ const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
       setErro(null)
       setSucesso(null)
 
-      const result = await servicoApi.post<RespostaApi<{ id: number }>>('/tipolancamentos', formData)
+      console.log('Enviando dados:', formData) // Log dos dados enviados
+
+      const result = await servicoApi.post<RespostaApi<{ tipl_codigo: number }>>('/tipolancamentos', formData)
+
+      console.log('Resposta da API:', result) // Log da resposta
 
       if (result.success) {
         setSucesso('Tipo de lançamento cadastrado com sucesso!')
-        // Redireciona após 2 segundos
         setTimeout(() => {
-          navigate('/tipolancamentos')
+          navigate('/lancamentos')
         }, 2000)
       }
     } catch (error: any) {
-      setErro(error.message || 'Erro ao cadastrar tipo de lançamento')
+      console.error('Erro detalhado:', error) // Log detalhado do erro
+      setErro(
+        error.response?.data?.message ||
+        error.message ||
+        'Erro ao cadastrar tipo de lançamento'
+      )
     } finally {
       setLoading(false)
     }
-  }
+}
 
   const handleCancel = () => {
-    navigate('/tipolancamentos')
+    navigate('/lancamentos')
   }
 
   return (
@@ -125,14 +134,14 @@ const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
                         <Form.Label>Descrição *</Form.Label>
                           <Form.Control
                             type="text"
-                            name="descricao"
-                            value={formData.descricao}
+                            name="tipl_descricao"
+                            value={formData.tipl_descricao}
                             onChange={handleInputChange}
                             required
                           />
                             <Form.Select
-                              name="tipo"
-                              value={formData.tipo}
+                              name="tipl_tipo"
+                              value={formData.tipl_tipo}
                               onChange={handleSelectChange}
                               required
                             >
@@ -160,6 +169,14 @@ const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
                         'Cadastrar'
                       )}
                     </Button>
+                    <Button
+  type="button"
+  variant="secondary"
+  onClick={() => console.log('Estado atual:', formData)}
+  className="me-2"
+>
+  Debug
+</Button>
                     <Button
                       type="button"
                       variant="outline-secondary"
