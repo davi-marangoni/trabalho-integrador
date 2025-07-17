@@ -37,6 +37,7 @@ function App() {
           <Route path="lancamentos" element={<Lancamentos />} />
           <Route path="tipolancamentos/cadastrar" element={<EntryForm />} />
           <Route path="lancamentos/novo" element={<EntryValuesForm />} />
+          <Route path="lancamentos/editar/:id" element={<EntryValuesForm />} />
           <Route path="relatorios" element={<Reports />} />
           <Route path="usuarios" element={<AdminRoute><Usuarios /></AdminRoute>} />
           <Route path="usuarios/cadastrar" element={<AdminRoute><UserForm /></AdminRoute>} />

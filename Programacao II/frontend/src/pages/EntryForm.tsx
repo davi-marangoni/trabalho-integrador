@@ -7,9 +7,9 @@ import { servicoApi } from '../services/api'
 import { RespostaApi } from '../types'
 
 interface EntryTypeFormData {
-  tipl_codigo?: number;
-  tipl_descricao: string
-  tipl_tipo: number // 1 - Entrada, 2 - Saída
+  id?: number;
+  descricao: string
+  tipo: number // 1 - Entrada, 2 - Saída
 }
 
 const EntryTypeForm: React.FC = () => {
@@ -19,15 +19,15 @@ const EntryTypeForm: React.FC = () => {
   const [sucesso, setSucesso] = useState<string | null>(null)
 
   const [formData, setFormData] = useState<EntryTypeFormData>({
-    tipl_descricao: '',
-    tipl_tipo: 1
+    descricao: '',
+    tipo: 1
   })
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
   const { name, value } = e.target
   setFormData(prev => ({
     ...prev,
-    [name]: name === 'tipl_tipo' ? parseInt(value) : value
+    [name]: name === 'tipo' ? parseInt(value) : value
   }))
 }
 
@@ -43,7 +43,7 @@ const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!formData.tipl_descricao || !formData.tipl_tipo) {
+    if (!formData.descricao || !formData.tipo) {
       setErro('Por favor, preencha todos os campos')
       return
     }
@@ -134,14 +134,14 @@ const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
                         <Form.Label>Descrição *</Form.Label>
                           <Form.Control
                             type="text"
-                            name="tipl_descricao"
-                            value={formData.tipl_descricao}
+                            name="descricao"
+                            value={formData.descricao}
                             onChange={handleInputChange}
                             required
                           />
                             <Form.Select
-                              name="tipl_tipo"
-                              value={formData.tipl_tipo}
+                              name="tipo"
+                              value={formData.tipo}
                               onChange={handleSelectChange}
                               required
                             >

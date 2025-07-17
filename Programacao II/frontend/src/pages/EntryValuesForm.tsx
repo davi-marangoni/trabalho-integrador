@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Container, Row, Col, Card, Form, Button, Alert } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
@@ -13,12 +13,26 @@ interface EntryFormData {
   arquivo?: File | null;
   idTipoLancamento: number;
   placaVeiculo: string;
+  isAbastecimento?: boolean;
+  isCtre?: boolean;
+  dadosAbastecimento?: {
+    postoGasolina: string;
+    tipoCombustivel: string;
+    valorUnidade: number;
+    quantidadeLitros: number;
+    valorTotal: number;
+    quilometrosRodados: number;
+  };
+  dadosCtre?: {
+    numeroConhecimento: string;
+    serieConhecimento: string;
+  };
 }
 
 interface TipoLancamento {
-  tipl_codigo: number;
-  tipl_descricao: string;
-  tipl_tipo: number;
+  id: number;
+  descricao: string;
+  tipo: number;
 }
 
 interface Veiculo {
@@ -28,6 +42,8 @@ interface Veiculo {
 
 const EntryValuesForm: React.FC = () => {
   const navigate = useNavigate()
+  const { id } = useParams<{ id?: string }>()
+  const isEditing = Boolean(id)
   const { usuario } = useAuth()
   const [loading, setLoading] = useState(false)
   const [erro, setErro] = useState<string | null>(null)
@@ -40,7 +56,9 @@ const EntryValuesForm: React.FC = () => {
     data: new Date().toISOString().split('T')[0],
     arquivo: null,
     idTipoLancamento: 0,
-    placaVeiculo: ''
+    placaVeiculo: '',
+    isAbastecimento: false,
+    isCtre: false
   })
 
   // Buscar tipos de lançamento
@@ -68,17 +86,87 @@ const EntryValuesForm: React.FC = () => {
   }
 }
 
+  // Buscar dados do lançamento para edição
+  const fetchLancamentoData = async (lancamentoId: string) => {
+    try {
+      setLoading(true)
+      const result = await servicoApi.get<RespostaApi<any>>(`/lancamentos/${lancamentoId}`)
+
+      if (result.success && result.data) {
+        const lancamento = result.data
+
+        setFormData({
+          valor: lancamento.valor,
+          data: lancamento.data,
+          arquivo: null,
+          idTipoLancamento: lancamento.idTipoLancamento,
+          placaVeiculo: lancamento.placaVeiculo,
+          isAbastecimento: lancamento.tipoLancamento === 'abastecimento',
+          isCtre: lancamento.tipoLancamento === 'ctre',
+          dadosAbastecimento: lancamento.tipoLancamento === 'abastecimento' ? {
+            postoGasolina: lancamento.postoGasolina || '',
+            tipoCombustivel: lancamento.tipoCombustivel || '',
+            valorUnidade: lancamento.valorUnidade || 0,
+            quantidadeLitros: lancamento.quantidadeLitros || 0,
+            valorTotal: lancamento.valorTotal || 0,
+            quilometrosRodados: lancamento.quilometrosRodados || 0
+          } : undefined,
+          dadosCtre: lancamento.tipoLancamento === 'ctre' ? {
+            numeroConhecimento: lancamento.numeroConhecimento || '',
+            serieConhecimento: lancamento.serieConhecimento || ''
+          } : undefined
+        })
+      }
+    } catch (error) {
+      setErro(error instanceof Error ? error.message : 'Erro ao carregar dados do lançamento')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   useEffect(() => {
     fetchTiposLancamento()
     fetchVeiculos()
-  }, [])
+    if (isEditing && id) {
+      fetchLancamentoData(id)
+    }
+  }, [isEditing, id])
 
  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const { name, value, type } = e.target
-  setFormData(prev => ({
-    ...prev,
-    [name]: type === 'number' ? parseFloat(value) : value
-  }))
+  const { name, value, type, checked } = e.target
+
+  if (type === 'checkbox') {
+    setFormData(prev => ({
+      ...prev,
+      [name]: checked,
+      // Limpar dados específicos quando desmarca
+      ...(name === 'isAbastecimento' && !checked ? { dadosAbastecimento: undefined } : {}),
+      ...(name === 'isCtre' && !checked ? { dadosCtre: undefined } : {})
+    }))
+  } else if (name.startsWith('abastecimento_')) {
+    const fieldName = name.replace('abastecimento_', '')
+    setFormData(prev => ({
+      ...prev,
+      dadosAbastecimento: {
+        ...prev.dadosAbastecimento,
+        [fieldName]: type === 'number' ? parseFloat(value) || 0 : value
+      } as any
+    }))
+  } else if (name.startsWith('ctre_')) {
+    const fieldName = name.replace('ctre_', '')
+    setFormData(prev => ({
+      ...prev,
+      dadosCtre: {
+        ...prev.dadosCtre,
+        [fieldName]: value
+      } as any
+    }))
+  } else {
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'number' ? parseFloat(value) : value
+    }))
+  }
 }
 const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
   const { name, value } = e.target
@@ -109,28 +197,33 @@ const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
       setErro(null)
       setSucesso(null)
 
-      // Criar FormData se houver arquivo
-      const dados = new FormData()
-      dados.append('valor', formData.valor.toString())
-      dados.append('data', formData.data)
-      dados.append('idTipoLancamento', formData.idTipoLancamento.toString())
-      dados.append('placaVeiculo', formData.placaVeiculo)
-      dados.append('emailUsuario', usuario?.email || '')
-
-      if (formData.arquivo) {
-        dados.append('arquivo', formData.arquivo)
+      const dadosParaEnvio = {
+        valor: formData.valor,
+        data: formData.data,
+        idTipoLancamento: formData.idTipoLancamento,
+        placaVeiculo: formData.placaVeiculo,
+        emailUsuarioAdicionou: usuario?.email || '',
+        isAbastecimento: formData.isAbastecimento || false,
+        isCtre: formData.isCtre || false,
+        dadosAbastecimento: formData.isAbastecimento ? formData.dadosAbastecimento : undefined,
+        dadosCtre: formData.isCtre ? formData.dadosCtre : undefined
       }
 
-      const response = await servicoApi.post<RespostaApi<{ id: number }>>('/lancamentos', dados)
+      let response
+      if (isEditing) {
+        response = await servicoApi.put<RespostaApi<{ id: number }>>(`/lancamentos/${id}`, dadosParaEnvio)
+      } else {
+        response = await servicoApi.post<RespostaApi<{ id: number }>>('/lancamentos', dadosParaEnvio)
+      }
 
       if (response.success) {
-        setSucesso('Lançamento cadastrado com sucesso!')
+        setSucesso(isEditing ? 'Lançamento atualizado com sucesso!' : 'Lançamento cadastrado com sucesso!')
         setTimeout(() => {
           navigate('/lancamentos')
         }, 2000)
       }
     } catch (error: any) {
-      setErro(error.response?.data?.message || 'Erro ao cadastrar lançamento')
+      setErro(error.response?.data?.message || `Erro ao ${isEditing ? 'atualizar' : 'cadastrar'} lançamento`)
     } finally {
       setLoading(false)
     }
@@ -146,7 +239,7 @@ const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         <Row className="mb-4">
           <Col>
             <div className="d-flex justify-content-between align-items-center">
-              <h1>Novo Lançamento</h1>
+              <h1>{isEditing ? 'Editar Lançamento' : 'Novo Lançamento'}</h1>
               <Button
                 variant="outline-secondary"
                 onClick={handleCancel}
@@ -197,8 +290,8 @@ const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
                         >
                           <option value="">Selecione um tipo</option>
                           {tiposLancamento.map(tipo => (
-                            <option key={tipo.tipl_codigo} value={tipo.tipl_codigo}>
-                              {tipo.tipl_descricao}
+                            <option key={tipo.id} value={tipo.id}>
+                              {tipo.descricao}
                             </option>
                           ))}
                         </Form.Select>
@@ -263,13 +356,178 @@ const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
                           type="file"
                           onChange={handleFileChange}
                           accept=".pdf,.jpg,.jpeg,.png"
+                          disabled={isEditing} // Não permite alterar arquivo na edição
                         />
                         <Form.Text className="text-muted">
                           Formatos aceitos: PDF, JPG, JPEG, PNG
+                          {isEditing && ' (não é possível alterar o arquivo na edição)'}
                         </Form.Text>
                       </Form.Group>
                     </Col>
                   </Row>
+
+                  {/* Seção de tipo específico do lançamento */}
+                  <Row>
+                    <Col md={12}>
+                      <h6 className="text-muted mb-3 border-top pt-3">Tipo Específico do Lançamento</h6>
+                    </Col>
+                  </Row>
+
+                  <Row>
+                    <Col md={6}>
+                      <Form.Group className="mb-3">
+                        <Form.Check
+                          type="checkbox"
+                          name="isAbastecimento"
+                          label="É um abastecimento"
+                          checked={formData.isAbastecimento || false}
+                          onChange={handleInputChange}
+                          disabled={formData.isCtre} // Desabilita se CTRE estiver marcado
+                        />
+                      </Form.Group>
+                    </Col>
+                    <Col md={6}>
+                      <Form.Group className="mb-3">
+                        <Form.Check
+                          type="checkbox"
+                          name="isCtre"
+                          label="É um CT-e"
+                          checked={formData.isCtre || false}
+                          onChange={handleInputChange}
+                          disabled={formData.isAbastecimento} // Desabilita se abastecimento estiver marcado
+                        />
+                      </Form.Group>
+                    </Col>
+                  </Row>
+
+                  {/* Campos específicos para abastecimento */}
+                  {formData.isAbastecimento && (
+                    <div className="border rounded p-3 mb-3 bg-light">
+                      <h6 className="text-primary mb-3">Dados do Abastecimento</h6>
+                      <Row>
+                        <Col md={6}>
+                          <Form.Group className="mb-3">
+                            <Form.Label>Posto de Gasolina</Form.Label>
+                            <Form.Control
+                              type="text"
+                              name="abastecimento_postoGasolina"
+                              value={formData.dadosAbastecimento?.postoGasolina || ''}
+                              onChange={handleInputChange}
+                              placeholder="Nome do posto"
+                            />
+                          </Form.Group>
+                        </Col>
+                        <Col md={6}>
+                          <Form.Group className="mb-3">
+                            <Form.Label>Tipo de Combustível</Form.Label>
+                            <Form.Select
+                              name="abastecimento_tipoCombustivel"
+                              value={formData.dadosAbastecimento?.tipoCombustivel || ''}
+                              onChange={(e) => handleInputChange(e as any)}
+                            >
+                              <option value="">Selecione</option>
+                              <option value="Gasolina">Gasolina</option>
+                              <option value="Etanol">Etanol</option>
+                              <option value="Diesel">Diesel</option>
+                              <option value="GNV">GNV</option>
+                            </Form.Select>
+                          </Form.Group>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col md={4}>
+                          <Form.Group className="mb-3">
+                            <Form.Label>Valor Unitário (R$)</Form.Label>
+                            <Form.Control
+                              type="number"
+                              name="abastecimento_valorUnidade"
+                              value={formData.dadosAbastecimento?.valorUnidade || ''}
+                              onChange={handleInputChange}
+                              step="0.001"
+                              min="0"
+                              placeholder="0.000"
+                            />
+                          </Form.Group>
+                        </Col>
+                        <Col md={4}>
+                          <Form.Group className="mb-3">
+                            <Form.Label>Quantidade (Litros)</Form.Label>
+                            <Form.Control
+                              type="number"
+                              name="abastecimento_quantidadeLitros"
+                              value={formData.dadosAbastecimento?.quantidadeLitros || ''}
+                              onChange={handleInputChange}
+                              step="0.001"
+                              min="0"
+                              placeholder="0.000"
+                            />
+                          </Form.Group>
+                        </Col>
+                        <Col md={4}>
+                          <Form.Group className="mb-3">
+                            <Form.Label>Valor Total (R$)</Form.Label>
+                            <Form.Control
+                              type="number"
+                              name="abastecimento_valorTotal"
+                              value={formData.dadosAbastecimento?.valorTotal || ''}
+                              onChange={handleInputChange}
+                              step="0.01"
+                              min="0"
+                              placeholder="0.00"
+                            />
+                          </Form.Group>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col md={6}>
+                          <Form.Group className="mb-3">
+                            <Form.Label>Quilômetros Rodados</Form.Label>
+                            <Form.Control
+                              type="number"
+                              name="abastecimento_quilometrosRodados"
+                              value={formData.dadosAbastecimento?.quilometrosRodados || ''}
+                              onChange={handleInputChange}
+                              min="0"
+                              placeholder="0"
+                            />
+                          </Form.Group>
+                        </Col>
+                      </Row>
+                    </div>
+                  )}
+
+                  {/* Campos específicos para CT-e */}
+                  {formData.isCtre && (
+                    <div className="border rounded p-3 mb-3 bg-light">
+                      <h6 className="text-success mb-3">Dados do Conhecimento de Transporte</h6>
+                      <Row>
+                        <Col md={6}>
+                          <Form.Group className="mb-3">
+                            <Form.Label>Número do Conhecimento</Form.Label>
+                            <Form.Control
+                              type="text"
+                              name="ctre_numeroConhecimento"
+                              value={formData.dadosCtre?.numeroConhecimento || ''}
+                              onChange={handleInputChange}
+                              placeholder="Número do CT-e"
+                            />
+                          </Form.Group>
+                        </Col>
+                        <Col md={6}>
+                          <Form.Group className="mb-3">
+                            <Form.Label>Série do Conhecimento</Form.Label>
+                            <Form.Control
+                              type="text"
+                              name="ctre_serieConhecimento"
+                              value={formData.dadosCtre?.serieConhecimento || ''}
+                              onChange={handleInputChange}
+                              placeholder="Série do CT-e"
+                            />
+                          </Form.Group>
+                        </Col>
+                      </Row>
+                    </div>
+                  )}
 
                   <div className="d-flex gap-2 mt-4">
                     <Button
@@ -285,7 +543,7 @@ const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
                           Salvando...
                         </>
                       ) : (
-                        'Cadastrar'
+                        isEditing ? 'Atualizar' : 'Cadastrar'
                       )}
                     </Button>
                     <Button

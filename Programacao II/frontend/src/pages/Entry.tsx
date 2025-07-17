@@ -17,6 +17,9 @@ interface Lancamento {
   idTipoLancamento: number;
   placaVeiculo: string;
   emailUsuarioAdicionou: string;
+  tipoDescricao: string;
+  tipoCategoria: number;
+  tipoLancamento: string; // 'abastecimento', 'ctre', ou 'comum'
 }
 
 interface TipoLancamento {
@@ -51,26 +54,38 @@ const Lancamentos: React.FC = () => {
   }, [])
 
 const columns: ColumnDefinition[] = [
+    { title: "ID", field: "id", width: 80 },
+    { title: "Valor", field: "valor", formatter: "money", formatterParams: { symbol: "R$ ", precision: 2 } },
+    { title: "Data", field: "data", formatter: "datetime", formatterParams: { inputFormat: "YYYY-MM-DD", outputFormat: "DD/MM/YYYY" } },
+    { title: "Tipo", field: "tipoDescricao" },
     {
-      title: 'Descrição',
-      field: 'desricao',
-      minWidth: 120,
-      headerFilter: 'input',
-      headerSort: true
+      title: "Categoria",
+      field: "tipoCategoria",
+      formatter: (cell: any) => {
+        const value = cell.getValue();
+        return value === 1 ? "Entrada" : "Saída";
+      }
     },
     {
-      title: 'Tipo',
-      field: 'tipo',
-      minWidth: 150,
-      headerSort: true
+      title: "Modalidade",
+      field: "tipoLancamento",
+      formatter: (cell: any) => {
+        const value = cell.getValue();
+        switch(value) {
+          case 'abastecimento': return 'Abastecimento';
+          case 'ctre': return 'CT-e';
+          default: return 'Comum';
+        }
+      }
     },
+    { title: "Veículo", field: "placaVeiculo" },
     {
       title: 'Ações',
       field: 'acoes',
       width: 120,
       headerSort: false,
       formatter: () => {
-        return '<button class="btn btn-sm btn-outline-primary edit-btn" title="Editar descrição"><i class="fas fa-edit me-1"></i>Editar</button>'
+        return '<button class="btn btn-sm btn-outline-primary edit-btn" title="Editar lançamento"><i class="fas fa-edit me-1"></i>Editar</button>'
       },
       cellClick: (e: any, cell: any) => {
         if (e.target.closest('.edit-btn')) {
@@ -88,8 +103,8 @@ const columns: ColumnDefinition[] = [
    useEffect(() => {
       initializeData()
     }, [])
-  const handleEditLancamento = (lancamento: TipoLancamento) => {
-    navigate(`/lancamento/${lancamento.descricao}`)
+  const handleEditLancamento = (lancamento: Lancamento) => {
+    navigate(`/lancamentos/editar/${lancamento.id}`)
   }
 
   const handleAddLancamento = () => {
