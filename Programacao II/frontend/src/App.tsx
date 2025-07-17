@@ -14,6 +14,7 @@ import Usuarios from './pages/Users'
 import UserForm from './pages/UserForm'
 import PasswordEditForm from './pages/PasswordEditForm'
 import PaginaNaoEncontrada from './pages/NotFound'
+import Reports from './pages/Reports'
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           <Route path="frotas" element={<Frotas />} />
           <Route path="frotas/cadastrar" element={<FrotaForm />} />
           <Route path="lancamentos" element={<Lancamentos />} />
+          <Route path="relatorios" element={<Reports />} />
           <Route path="usuarios" element={<AdminRoute><Usuarios /></AdminRoute>} />
           <Route path="usuarios/cadastrar" element={<AdminRoute><UserForm /></AdminRoute>} />
           <Route path="usuarios/editar-senha/:email" element={<AdminRoute><PasswordEditForm /></AdminRoute>} />

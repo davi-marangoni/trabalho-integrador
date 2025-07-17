@@ -25,7 +25,8 @@ const Sidebar: React.FC = () => {
     { caminho: '/', label: 'Dashboard', icone: faChartBar },
     { caminho: '/veiculos', label: 'Veículos', icone: faTruck },
     { caminho: '/frotas', label: 'Frotas', icone: faLink },
-    { caminho: '/lancamentos', label: 'Lançamentos', icone: faChartBar }
+    { caminho: '/lancamentos', label: 'Lançamentos', icone: faChartBar },
+    { caminho: '/relatorios', label: 'Relatórios', icone: faChartBar }
   ]
 
   // Adiciona item de Usuários apenas para administradores (tipo 1)
