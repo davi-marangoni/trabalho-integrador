@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Container, Row, Col, Card, Button } from 'react-bootstrap'
+import { Container, Row, Col, Card, Button, Modal } from 'react-bootstrap'
 import { ReactTabulator, ColumnDefinition } from 'react-tabulator'
 import 'react-tabulator/css/tabulator_bootstrap5.min.css'
 import axios from 'axios';
@@ -35,6 +35,8 @@ const Lancamentos: React.FC = () => {
   const tableRef = useRef<any>(null)
   const resizeTimeoutRef = useRef<number | null>(null)
   const { isCollapsed } = useSidebar()
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [lancamentoToDelete, setLancamentoToDelete] = useState<Lancamento | null>(null)
 
   // Função debounced para redimensionar tabela
   const debouncedResize = useCallback(() => {
@@ -82,15 +84,29 @@ const columns: ColumnDefinition[] = [
     {
       title: 'Ações',
       field: 'acoes',
-      width: 120,
+      width: 200,
       headerSort: false,
       formatter: () => {
-        return '<button class="btn btn-sm btn-outline-primary edit-btn" title="Editar lançamento"><i class="fas fa-edit me-1"></i>Editar</button>'
+        return `
+          <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-outline-primary edit-btn" title="Editar lançamento">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger delete-btn" title="Deletar lançamento">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        `
       },
       cellClick: (e: any, cell: any) => {
-        if (e.target.closest('.edit-btn')) {
-          const lancamento = cell.getRow().getData()
+        const target = e.target.closest('button')
+        if (!target) return
+
+        const lancamento = cell.getRow().getData()
+        if (target.classList.contains('edit-btn')) {
           handleEditLancamento(lancamento)
+        } else if (target.classList.contains('delete-btn')) {
+          handleDeleteConfirm(lancamento)
         }
       }
     }
@@ -114,6 +130,29 @@ const columns: ColumnDefinition[] = [
   const handleAddNewLancamento = () => {
   navigate(`/lancamentos/novo`)
 }
+
+  const handleDeleteConfirm = (lancamento: Lancamento) => {
+    setLancamentoToDelete(lancamento)
+    setShowDeleteModal(true)
+  }
+
+  const handleDelete = async () => {
+    if (!lancamentoToDelete) return
+
+    try {
+      const result = await servicoApi.delete<RespostaApi>(`/lancamentos/${lancamentoToDelete.id}`)
+
+      if (result.success) {
+        await fetchLancamentos()
+        setShowDeleteModal(false)
+        setLancamentoToDelete(null)
+      } else {
+        console.error('Erro ao deletar lançamento:', result.message)
+      }
+    } catch (error) {
+      console.error('Erro ao deletar lançamento:', error)
+    }
+  }
 
   const fetchLancamentos = async () => {
       try {
@@ -195,6 +234,26 @@ const columns: ColumnDefinition[] = [
             </Col>
           </Row>
         </Container>
+
+        {/* Modal de confirmação de exclusão */}
+        <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title>Confirmar Exclusão</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            Tem certeza que deseja deletar o lançamento <strong>#{lancamentoToDelete?.id}</strong>?
+            <br />
+            <span className="text-danger">Esta ação não pode ser desfeita.</span>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+              Cancelar
+            </Button>
+            <Button variant="danger" onClick={handleDelete}>
+              Deletar
+            </Button>
+          </Modal.Footer>
+        </Modal>
         </div>
   );
 }
